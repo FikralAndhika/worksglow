@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Works Glow - Bengkel Cat Profesional</title>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">Works Glow</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#services">Layanan</a></li>
+                <li><a href="#gallery">Galeri</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-slider">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <div class="slide-bg slide1-bg" style="background-image: url('Untitled design/1.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="hero-content">
+                    <div class="hero-subtitle">Make A Desire</div>
+                    <h1 class="hero-title">WORKS GLOW</h1>
+                    <p class="hero-description">Bengkel Cat Profesional dengan Kualitas Premium</p>
+                    <a href="#contact" class="cta-button">LEARN MORE!</a>
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <div class="slide-bg slide1-bg" style="background-image: url('Untitled design/2.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="hero-content">
+                    <div class="hero-subtitle">Professional Service</div>
+                    <h1 class="hero-title">PREMIUM QUALITY</h1>
+                    <p class="hero-description">Hasil Cat Terbaik dengan Teknologi Modern</p>
+                    <a href="#contact" class="cta-button">LEARN MORE!</a>
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                 <div class="slide-bg slide1-bg" style="background-image: url('Untitled design/3.jpg'); background-size: cover; background-position: center;"></div>
+                <div class="hero-content">
+                    <div class="hero-subtitle">Expert Team</div>
+                    <h1 class="hero-title">SATISFACTION</h1>
+                    <p class="hero-description">Kepuasan Pelanggan adalah Prioritas Utama</p>
+                    <a href="#contact" class="cta-button">LEARN MORE!</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide Indicators -->
+        <div class="slide-indicators">
+            <span class="indicator active" data-slide="0"></span>
+            <span class="indicator" data-slide="1"></span>
+            <span class="indicator" data-slide="2"></span>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <div class="slide-nav">
+            <button class="prev-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="next-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Layanan Kami</h2>
+                <p>Kami menyediakan berbagai layanan cat berkualitas tinggi untuk kebutuhan Anda</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Cat Mobil</h3>
+                    <p>Layanan cat mobil profesional dengan hasil sempurna dan tahan lama. Menggunakan cat berkualitas premium dan teknologi terdepan.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    <h3>Cat Motor</h3>
+                    <p>Spesialis cat motor dengan berbagai pilihan warna dan finishing. Hasil mengkilap dan detail yang presisi.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Body Repair</h3>
+                    <p>Layanan perbaikan body kendaraan dengan teknik terbaik. Mengembalikan kondisi kendaraan seperti semula.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Custom Paint</h3>
+                    <p>Desain cat custom sesuai keinginan Anda. Dari airbrush hingga grafis kompleks dengan hasil yang menakjubkan.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Paint Protection</h3>
+                    <p>Layanan perlindungan cat kendaraan dengan coating berkualitas tinggi untuk hasil yang tahan lama.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Warranty</h3>
+                    <p>Garansi resmi untuk setiap pekerjaan kami. Kepuasan dan kualitas adalah prioritas utama.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galeri Karya</h2>
+                <p>Lihat hasil karya terbaik kami dengan kualitas premium</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="goToGallery()"></div>
+                <div class="gallery-item" onclick="goToGallery()"></div>
+                <div class="gallery-item" onclick="goToGallery()"></div>
+                <div class="gallery-item" onclick="goToGallery()"></div>
+                <div class="gallery-item" onclick="goToGallery()"></div>
+                <div class="gallery-item" onclick="goToGallery()"></div>
+            </div>
+            <div class="gallery-actions">
+                <button class="btn-detail" onclick="goToGallery()">
+                    LIHAT SEMUA GALERI
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Hubungi Kami</h2>
+                <p>Siap melayani kebutuhan cat kendaraan Anda dengan kualitas terbaik</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Informasi Kontak</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Alamat</strong><br>
+                            <a href="https://maps.app.goo.gl/SkXTYsDLL7NzeyRz5" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">
+                                Jl. Pasir Pogor Raya No.7 Blok DD No.6, Mekarjaya, Kec. Rancasari, Kota Bandung, Jawa Barat 40292
+                            </a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Telepon</strong><br>
+                            <a href="https://wa.me/6285606296686" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">
+                            +62 856-0629-6686
+                            </a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong><br>
+                            info@worksglow.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Jam Buka</strong><br>
+                            Senin - Sabtu: 08:00 - 17:00
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label for="name">Nama</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Telepon</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service">Layanan</label>
+                        <input type="text" id="service" name="service" placeholder="Cat mobil, motor, custom, dll." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Pesan</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Deskripsikan kebutuhan Anda..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Kirim Pesan</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Works Glow. Semua hak cipta dilindungi.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/works_glow/"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="mailto: works.glows@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="https://wa.me/6285606296686"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.tiktok.com/@works_glow?_t=ZS-8zXxBCqy5K4&_r=1"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Works Glow - Galeri Karya</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: #000;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            color: #666;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 120px 0 100px 0;
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #000;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-weight: 300;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .gallery-item-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item-image::before {
+            content: '\f1b9';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .gallery-item-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-item-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+
+        .gallery-item-content p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lightbox-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 10;
+        }
+
+        .lightbox-close {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: scale(1.1);
+        }
+
+        .lightbox-main {
+            display: flex;
+            gap: 2rem;
+            height: 100%;
+            padding: 4rem 2rem 2rem 2rem;
+            align-items: center;
+        }
+
+        .lightbox-left {
+            display: flex;
+            gap: 1.5rem;
+            flex: 1;
+            max-width: 60%;
+            height: 80vh;
+            align-items: center;
+        }
+
+        .lightbox-thumbnails {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            overflow-y: auto;
+            max-height: 80vh;
+            padding-right: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .lightbox-thumbnails::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .lightbox-thumbnails::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .lightbox-thumbnails::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .lightbox-thumbnail {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            flex-shrink: 0;
+        }
+
+        .lightbox-thumbnail:hover {
+            opacity: 0.8;
+        }
+
+        .lightbox-thumbnail.active {
+            opacity: 1;
+            border-color: white;
+        }
+
+        .lightbox-slider {
+            position: relative;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-nav:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .lightbox-nav.prev {
+            left: 10px;
+        }
+
+        .lightbox-nav.next {
+            right: 10px;
+        }
+
+        .lightbox-right {
+            flex: 0 0 35%;
+            max-width: 500px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .lightbox-right::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .lightbox-right::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .lightbox-right::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .lightbox-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .lightbox-subtitle {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .lightbox-description {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #ddd;
+        }
+
+        .lightbox-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .info-item i {
+            width: 30px;
+            font-size: 1.2rem;
+            color: #ccc;
+        }
+
+        .info-item span {
+            font-size: 0.95rem;
+        }
+
+        .lightbox-counter {
+            color: #ccc;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #ccc;
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .lightbox-left {
+                max-width: 55%;
+            }
+
+            .lightbox-right {
+                flex: 0 0 40%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lightbox-main {
+                flex-direction: column;
+                padding: 3rem 1rem 1rem 1rem;
+                overflow-y: auto;
+            }
+
+            .lightbox-left {
+                max-width: 100%;
+                height: 50vh;
+                flex-direction: column-reverse;
+            }
+
+            .lightbox-thumbnails {
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                max-height: none;
+                padding-bottom: 0.5rem;
+            }
+
+            .lightbox-thumbnail {
+                width: 60px;
+                height: 60px;
+            }
+
+            .lightbox-right {
+                max-width: 100%;
+                flex: 1;
+                max-height: none;
+            }
+
+            .lightbox-nav.prev {
+                left: 5px;
+            }
+
+            .lightbox-nav.next {
+                right: 5px;
+            }
+
+            .lightbox-header {
+                padding: 1rem;
+            }
+
+            .lightbox-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Works Glow</a>
+            <ul class="nav-menu">
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#services">Layanan</a></li>
+                <li><a href="#gallery">Galeri</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Galeri Karya</h2>
+                <p>Lihat hasil karya terbaik kami dengan kualitas premium</p>
+            </div>
+            <div class="gallery-grid">
+                <!-- Gallery Item 1 -->
+                <div class="gallery-item" onclick="openLightbox(0)">
+                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h3>Toyota Avanza Veloz</h3>
+                        <p>Full Body Repaint - Metallic Silver</p>
+                        <span class="photo-count">
+                            <i class="fas fa-images"></i>
+                            <span>5 Foto</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 2 -->
+                <div class="gallery-item" onclick="openLightbox(1)">
+                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h3>Honda Jazz RS</h3>
+                        <p>Custom Paint - Candy Red</p>
+                        <span class="photo-count">
+                            <i class="fas fa-images"></i>
+                            <span>4 Foto</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 3 -->
+                <div class="gallery-item" onclick="openLightbox(2)">
+                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h3>Mitsubishi Xpander</h3>
+                        <p>Premium Coating & Polish</p>
+                        <span class="photo-count">
+                            <i class="fas fa-images"></i>
+                            <span>6 Foto</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 4 -->
+                <div class="gallery-item" onclick="openLightbox(3)">
+                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h3>Daihatsu Terios</h3>
+                        <p>Dent Repair & Repaint</p>
+                        <span class="photo-count">
+                            <i class="fas fa-images"></i>
+                            <span>5 Foto</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 5 -->
+                <div class="gallery-item" onclick="openLightbox(4)">
+                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h3>Suzuki Ertiga</h3>
+                        <p>Scratch Removal & Full Polish</p>
+                        <span class="photo-count">
+                            <i class="fas fa-images"></i>
+                            <span>4 Foto</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Gallery Item 6 -->
+                <div class="gallery-item" onclick="openLightbox(5)">
+                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
+                    </div>
+                    <div class="gallery-item-content">
+                        <h3>BMW 3 Series</h3>
+                        <p>Luxury Detailing & Ceramic Coating</p>
+                        <span class="photo-count">
+                            <i class="fas fa-images"></i>
+                            <span>7 Foto</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <div class="lightbox-header">
+                <button class="lightbox-close" onclick="closeLightbox()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="lightbox-main">
+                <div class="lightbox-left">
+                    <div class="lightbox-thumbnails" id="lightboxThumbnails"></div>
+                    <div class="lightbox-slider">
+                        <button class="lightbox-nav prev" onclick="changeSlide(-1)">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <img class="lightbox-image" id="lightboxImage" src="" alt="">
+                        <button class="lightbox-nav next" onclick="changeSlide(1)">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="lightbox-right">
+                    <div>
+                        <h2 class="lightbox-title" id="lightboxTitle">Title</h2>
+                        <p class="lightbox-subtitle" id="lightboxSubtitle">Subtitle</p>
+                        <div class="lightbox-description" id="lightboxDescription">
+                            Description text here
+                        </div>
+                    </div>
+                    <div class="lightbox-info">
+                        <div class="info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="lightboxDate">Januari 2025</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-paint-brush"></i>
+                            <span id="lightboxService">Full Body Repaint</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="lightboxDuration">5 Hari Pengerjaan</span>
+                        </div>
+                    </div>
+                    <div class="lightbox-counter" id="lightboxCounter">1 / 5</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Works Glow. Semua hak cipta dilindungi.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/works_glow/"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="mailto:works.glows@gmail.com"><i class="fa-brands fa-google"></i></a>
+                <a href="https://wa.me/6285606296686"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.tiktok.com/@works_glow"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data galeri dengan multiple images per project
+        const galleryData = [
+            {
+                title: "Toyota Avanza Veloz",
+                subtitle: "Full Body Repaint",
+                description: "Pengecatan ulang full body dengan warna Metallic Silver. Proses pengerjaan meliputi stripping cat lama, repair body, primer, base coat, dan clear coat dengan hasil glossy sempurna. Menggunakan cat premium berkualitas tinggi untuk hasil yang tahan lama.",
+                date: "Januari 2025",
+                service: "Full Body Repaint",
+                duration: "5 Hari Pengerjaan",
+                images: [
+                    "Untitled design/1.jpg",
+                    "Untitled design/2.jpg",
+                    "Untitled design/3.jpg",
+                    "Untitled design/4.jpg",
+                    "Untitled design/5.jpg"
+                ]
+            },
+            {
+                title: "Honda Jazz RS",
+                subtitle: "Custom Paint",
+                description: "Custom paint dengan finishing Candy Red yang menawan. Detail pengerjaan mencakup body preparation, custom mixing warna sesuai request, aplikasi candy paint layer by layer untuk hasil depth yang maksimal, dan finishing dengan ceramic coating.",
+                date: "Desember 2024",
+                service: "Custom Paint Job",
+                duration: "7 Hari Pengerjaan",
+                images: [
+                    "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Jazz+1",
+                    "https://via.placeholder.com/1200x800/f5576c/ffffff?text=Jazz+2",
+                    "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Jazz+3",
+                    "https://via.placeholder.com/1200x800/f5576c/ffffff?text=Jazz+4"
+                ]
+            },
+            {
+                title: "Mitsubishi Xpander",
+                subtitle: "Premium Coating & Polish",
+                description: "Treatment lengkap premium coating dan polish. Dimulai dengan wash & clay bar, machine polish untuk menghilangkan swirl marks, paint correction, dan diakhiri dengan aplikasi ceramic coating 9H untuk proteksi maksimal dan kilau yang tahan lama hingga 2 tahun.",
+                date: "Januari 2025",
+                service: "Ceramic Coating + Polish",
+                duration: "3 Hari Pengerjaan",
+                images: [
+                    "https://via.placeholder.com/1200x800/4facfe/ffffff?text=Xpander+1",
+                    "https://via.placeholder.com/1200x800/00f2fe/ffffff?text=Xpander+2",
+                    "https://via.placeholder.com/1200x800/4facfe/ffffff?text=Xpander+3",
+                    "https://via.placeholder.com/1200x800/00f2fe/ffffff?text=Xpander+4",
+                    "https://via.placeholder.com/1200x800/4facfe/ffffff?text=Xpander+5",
+                    "https://via.placeholder.com/1200x800/00f2fe/ffffff?text=Xpander+6"
+                ]
+            },
+            {
+                title: "Daihatsu Terios",
+                subtitle: "Dent Repair & Repaint",
+                description: "Perbaikan body dari kerusakan akibat benturan. Proses meliputi dent repair dengan teknik PDR untuk hasil sempurna, welding jika diperlukan, body filler, sanding, primer, dan pengecatan ulang area yang diperbaiki dengan color matching sempurna terhadap warna original.",
+                date: "Desember 2024",
+                service: "Body Repair + Repaint",
+                duration: "6 Hari Pengerjaan",
+                images: [
+                    "https://via.placeholder.com/1200x800/43e97b/ffffff?text=Terios+1",
+                    "https://via.placeholder.com/1200x800/38f9d7/ffffff?text=Terios+2",
+                    "https://via.placeholder.com/1200x800/43e97b/ffffff?text=Terios+3",
+                    "https://via.placeholder.com/1200x800/38f9d7/ffffff?text=Terios+4",
+                    "https://via.placeholder.com/1200x800/43e97b/ffffff?text=Terios+5"
+                ]
+            },
+            {
+                title: "Suzuki Ertiga",
+                subtitle: "Scratch Removal & Polish",
+                description: "Treatment khusus untuk menghilangkan goresan dan scratches pada body mobil. Menggunakan teknik multi-stage polishing dengan compound dan polish pad profesional, diikuti dengan glazing untuk hasil yang lebih halus dan mengkilap seperti baru keluar dari showroom.",
+                date: "November 2024",
+                service: "Paint Correction",
+                duration: "2 Hari Pengerjaan",
+                images: [
+                    "https://via.placeholder.com/1200x800/fa709a/ffffff?text=Ertiga+1",
+                    "https://via.placeholder.com/1200x800/fee140/ffffff?text=Ertiga+2",
+                    "https://via.placeholder.com/1200x800/fa709a/ffffff?text=Ertiga+3",
+                    "https://via.placeholder.com/1200x800/fee140/ffffff?text=Ertiga+4"
+                ]
+            },
+            {
+                title: "BMW 3 Series",
+                subtitle: "Luxury Detailing Package",
+                description: "Paket detailing premium untuk mobil mewah. Mencakup full exterior detailing dengan clay bar treatment, multi-stage paint correction untuk menghilangkan imperfections, aplikasi ceramic coating grade premium, interior deep cleaning, leather treatment, dan engine bay detailing untuk tampilan sempurna menyeluruh.",
+                date: "Januari 2025",
+                service: "Luxury Full Detailing",
+                duration: "10 Hari Pengerjaan",
+                images: [
+                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+1",
+                    "https://via.placeholder.com/1200x800/330867/ffffff?text=BMW+2",
+                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+3",
+                    "https://via.placeholder.com/1200x800/330867/ffffff?text=BMW+4",
+                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+5",
+                    "https://via.placeholder.com/1200x800/330867/ffffff?text=BMW+6",
+                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+7"
+                ]
+            }
+        ];
+
+        let currentGallery = 0;
+        let currentSlide = 0;
+
+        function openLightbox(galleryIndex) {
+            currentGallery = galleryIndex;
+            currentSlide = 0;
+            
+            const lightbox = document.getElementById('lightbox');
+            const gallery = galleryData[galleryIndex];
+            
+            // Update content
+            document.getElementById('lightboxTitle').textContent = gallery.title;
+            document.getElementById('lightboxSubtitle').textContent = gallery.subtitle;
+            document.getElementById('lightboxDescription').textContent = gallery.description;
+            document.getElementById('lightboxDate').textContent = gallery.date;
+            document.getElementById('lightboxService').textContent = gallery.service;
+            document.getElementById('lightboxDuration').textContent = gallery.duration;
+            
+            updateSlide();
+            createThumbnails();
+            
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function changeSlide(direction) {
+            const gallery = galleryData[currentGallery];
+            currentSlide += direction;
+            
+            if (currentSlide < 0) {
+                currentSlide = gallery.images.length - 1;
+            } else if (currentSlide >= gallery.images.length) {
+                currentSlide = 0;
+            }
+            
+            updateSlide();
+        }
+
+        function updateSlide() {
+            const gallery = galleryData[currentGallery];
+            const image = document.getElementById('lightboxImage');
+            const counter = document.getElementById('lightboxCounter');
+            
+            image.src = gallery.images[currentSlide];
+            counter.textContent = `${currentSlide + 1} / ${gallery.images.length}`;
+            
+            updateThumbnailsActive();
+        }
+
+        function createThumbnails() {
+            const gallery = galleryData[currentGallery];
+            const container = document.getElementById('lightboxThumbnails');
+            container.innerHTML = '';
+            
+            gallery.images.forEach((img, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = img;
+                thumb.className = 'lightbox-thumbnail' + (index === 0 ? ' active' : '');
+                thumb.onclick = () => {
+                    currentSlide = index;
+                    updateSlide();
+                };
+                container.appendChild(thumb);
+            });
+        }
+
+        function updateThumbnailsActive() {
+            const thumbnails = document.querySelectorAll('.lightbox-thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') changeSlide(-1);
+                if (e.key === 'ArrowRight') changeSlide(1);
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+
+        // Close lightbox when clicking outside
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>

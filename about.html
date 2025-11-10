@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Works Glow</title>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Additional styles for About page -->
+    <style>
+        .about-hero {
+            padding: 120px 0 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-size: 3rem;
+            color: #000;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+        
+        .about-hero p {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            padding: 80px 0;
+            background: #fff;
+        }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: #000;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+        
+        .about-text p {
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        
+        .about-image {
+            background: linear-gradient(45deg, #e9ecef, #f8f9fa);
+            aspect-ratio: 4/3;
+            border: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #999;
+        }
+        
+        .mission-vision {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+        
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .mv-card {
+            background: #fff;
+            padding: 3rem 2rem;
+            border: 1px solid #e9ecef;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .mv-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: #000;
+        }
+        
+        .mv-card i {
+            font-size: 3rem;
+            color: #000;
+            margin-bottom: 1.5rem;
+        }
+        
+        .mv-card h3 {
+            font-size: 2rem;
+            color: #000;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+        
+        .mv-card p {
+            color: #666;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+        
+        .values {
+            padding: 80px 0;
+            background: #fff;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .value-item {
+            text-align: center;
+            padding: 2rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .value-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .value-item i {
+            font-size: 2.5rem;
+            color: #000;
+            margin-bottom: 1rem;
+        }
+        
+        .value-item h4 {
+            font-size: 1.3rem;
+            color: #000;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .value-item p {
+            color: #666;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+        
+        .team {
+            background: #464545;
+            color: #fff;
+            padding: 80px 0;
+        }
+        
+        .team .section-title h2 {
+            color: #fff;
+        }
+        
+        .team .section-title p {
+            color: #ccc;
+        }
+        
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #ccc;
+            font-weight: 300;
+        }
+        
+        /* Navigation active state */
+        .nav-menu a.active {
+            color: #000 !important;
+            font-weight: 600;
+        }
+        
+        .nav-menu a.active::after {
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .mv-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .about-text h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Works Glow</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="index.html#services">Layanan</a></li>
+                <li><a href="index.html#gallery">Galeri</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="index.html#contact">Kontak</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <h1>Tentang Works Glow</h1>
+            <p>Bengkel cat profesional yang telah dipercaya sejak 2015, menghadirkan inovasi dan kualitas terbaik dalam setiap layanan</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="about-content">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-text">
+                    <h2>Sejarah Kami</h2>
+                    <p>Works Glow didirikan pada tahun 2015 dengan visi menjadi bengkel cat terdepan di Indonesia. Dimulai dari sebuah workshop kecil, kami terus berkembang dengan mengedepankan kualitas dan inovasi dalam setiap pekerjaan.</p>
+                    <p>Dengan pengalaman lebih dari 8 tahun, kami telah menangani ribuan kendaraan dan memberikan kepuasan maksimal kepada pelanggan. Tim profesional kami selalu menggunakan teknologi terdepan dan bahan berkualitas premium.</p>
+                    <p>Kepercayaan pelanggan adalah aset terbesar kami, dan kami berkomitmen untuk terus memberikan hasil terbaik dengan standar internasional.</p>
+                </div>
+                <div class="about-image">
+                    <img src="image/logo/Works Glow.png" alt="Works Glow Workshop">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="mission-vision">
+        <div class="container">
+            <div class="mv-grid">
+                <div class="mv-card">
+                    <i class="fas fa-eye"></i>
+                    <h3>Visi</h3>
+                    <p>Menjadi bengkel cat kendaraan terdepan di Indonesia yang dikenal dengan kualitas premium, inovasi teknologi, dan pelayanan terbaik untuk menciptakan hasil yang memukau dan memuaskan setiap pelanggan.</p>
+                </div>
+                <div class="mv-card">
+                    <i class="fas fa-bullseye"></i>
+                    <h3>Misi</h3>
+                    <p>Memberikan layanan cat kendaraan berkualitas tinggi dengan menggunakan teknologi terdepan, tenaga ahli profesional, dan material premium untuk menghasilkan karya seni yang tahan lama dan membanggakan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values -->
+    <section class="values">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nilai-Nilai Kami</h2>
+                <p>Prinsip yang menjadi fondasi dalam setiap layanan Works Glow</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-item">
+                    <i class="fas fa-star"></i>
+                    <h4>Kualitas Premium</h4>
+                    <p>Menggunakan cat dan material terbaik dengan standar internasional untuk hasil yang sempurna dan tahan lama.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-users"></i>
+                    <h4>Profesionalisme</h4>
+                    <p>Tim ahli dengan pengalaman bertahun-tahun yang selalu mengutamakan kepuasan dan kepercayaan pelanggan.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <h4>Inovasi</h4>
+                    <p>Selalu mengikuti perkembangan teknologi terbaru dalam industri cat kendaraan untuk hasil yang optimal.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-clock"></i>
+                    <h4>Ketepatan Waktu</h4>
+                    <p>Menghargai waktu pelanggan dengan menyelesaikan setiap pekerjaan sesuai jadwal yang telah disepakati.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-handshake"></i>
+                    <h4>Integritas</h4>
+                    <p>Berkomitmen pada kejujuran, transparansi, dan memberikan pelayanan yang fair kepada semua pelanggan.</p>
+                </div>
+                <div class="value-item">
+                    <i class="fas fa-heart"></i>
+                    <h4>Passion</h4>
+                    <p>Mengerjakan setiap proyek dengan dedikasi tinggi dan cinta terhadap seni dalam dunia otomotif.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Stats -->
+    <section class="team">
+        <div class="container">
+            <div class="section-title">
+                <h2>Works Glow dalam Angka</h2>
+                <p>Prestasi dan pencapaian yang membanggakan sepanjang perjalanan kami</p>
+            </div>
+            <div class="team-stats">
+                <div class="stat-item">
+                    <div class="stat-number">8+</div>
+                    <div class="stat-label">Tahun Pengalaman</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2500+</div>
+                    <div class="stat-label">Kendaraan Ditangani</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Kepuasan Pelanggan</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Tim Profesional</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Proyek Custom</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Bergaransi</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Works Glow. Semua hak cipta dilindungi.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/works_glow/"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="mailto: works.glows@gmail.com"><i class="fa-brands fa-google"></i></a>
+                <a href="https://wa.me/6285606296686"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.tiktok.com/@works_glow?_t=ZS-8zXxBCqy5K4&_r=1"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
