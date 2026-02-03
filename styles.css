@@ -57,7 +57,7 @@ html {
 }
 
 /* ============================================
-   NAVIGATION - ✅ FIXED SPACING ISSUE
+   NAVIGATION - ✅ MOBILE FRIENDLY WITH HAMBURGER
    ============================================ */
 .navbar {
     position: fixed;
@@ -85,7 +85,7 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 3rem;
+    padding: 0 2rem;
 }
 
 .logo {
@@ -96,6 +96,7 @@ html {
     letter-spacing: -1px;
     transition: all 0.3s ease;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
 }
 
 .navbar.scrolled .logo {
@@ -108,12 +109,29 @@ html {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* ✅ PERBAIKAN UTAMA: Tambah margin-right besar untuk hindari overlap */
+/* ✅ HAMBURGER MENU BUTTON */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    padding: 5px;
+}
+
+.navbar.scrolled .hamburger {
+    color: #000;
+}
+
+/* Desktop Menu */
 .nav-menu {
     display: flex;
     list-style: none;
     gap: 3rem;
-    margin-right: 280px; /* ✅ SOLUSI: Beri jarak 280px dari kanan untuk badge */
+    margin-right: 280px;
 }
 
 .nav-menu a {
@@ -121,8 +139,8 @@ html {
     text-decoration: none;
     transition: all 0.3s ease;
     position: relative;
-    font-weight: 600; /* ✅ Diperberat dari 500 */
-    font-size: 1.3rem; /* ✅ Diperbesar dari 1.1rem */
+    font-weight: 600;
+    font-size: 1.1rem;
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 }
 
@@ -229,7 +247,6 @@ html {
     z-index: -1;
 }
 
-/* Slide backgrounds yang lebih kontras dan mudah terlihat */
 .slide1-bg {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -313,6 +330,10 @@ html {
     transition: all 0.3s ease;
     border: 2px solid #fff;
     border-radius: 50px;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .cta-button:hover {
@@ -500,9 +521,7 @@ html {
     line-height: 1.7;
 }
 
-/* ============================================================
-   GALLERY SECTION - 3x2 GRID LAYOUT (6 ITEMS)
-   ============================================================ */
+/* Gallery Section */
 .gallery {
     padding: 100px 0;
     background: #f8f9fa;
@@ -673,6 +692,7 @@ html {
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 0.9rem;
+    min-height: 48px;
 }
 
 .submit-btn:hover {
@@ -710,92 +730,6 @@ html {
     transform: scale(1.2);
 }
 
-/* ============================================================
-   RESPONSIVE DESIGN
-   ============================================================ */
-@media (max-width: 1200px) {
-    .nav-container {
-        padding: 0 2rem;
-    }
-    
-    .nav-menu {
-        gap: 2rem;
-        margin-right: 220px; /* ✅ Adjust untuk screen lebih kecil */
-    }
-    
-    .nav-menu a {
-        font-size: 1.15rem; /* ✅ Tetap besar di screen medium */
-    }
-}
-
-@media (max-width: 992px) {
-    .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .nav-menu {
-        margin-right: 200px;
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-menu {
-        display: none;
-    }
-
-    .logo {
-        font-size: 1.8rem;
-    }
-
-    .hero-title {
-        font-size: 2.5rem;
-    }
-
-    .hero-description {
-        font-size: 1.1rem;
-    }
-
-    .contact-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .slide-nav {
-        padding: 0 1rem;
-    }
-
-    .prev-btn,
-    .next-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1rem;
-    }
-
-    .slide-indicators {
-        bottom: 20px;
-    }
-
-    .indicator {
-        width: 12px;
-        height: 12px;
-    }
-}
-
-@media (max-width: 576px) {
-    .gallery-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .gallery-item {
-        height: 250px;
-    }
-}
-
-/*image*/
 .about-image img {
     width: 100%;
     height: 300px;
@@ -803,7 +737,7 @@ html {
     border-radius: 8px;
 }
 
-/* Gallery Actions - Improved Button */
+/* Gallery Actions */
 .gallery-actions {
     text-align: center;
     margin-top: 3rem;
@@ -825,6 +759,7 @@ html {
     font-family: inherit;
     border-radius: 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    min-height: 48px;
 }
 
 .btn-detail:hover {
@@ -839,11 +774,7 @@ html {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* ========================================
-   ADMIN LOGIN & EDIT MODE - IMPROVED POSITIONING
-   ======================================== */
-
-/* Admin Login Button */
+/* Admin Login & Edit Mode */
 .admin-login-btn {
     position: fixed !important;
     top: 20px !important;
@@ -872,7 +803,6 @@ html {
     margin-right: 8px;
 }
 
-/* Edit Mode Badge */
 .edit-mode-badge {
     position: fixed !important;
     top: 20px !important;
@@ -911,21 +841,15 @@ html {
     background: rgba(255, 255, 255, 0.3) !important;
 }
 
-/* Login Modal */
 .login-modal {
     z-index: 10002 !important;
 }
 
-/* Edit Buttons */
 .edit-btn {
     z-index: 100 !important;
 }
 
-/* ========================================
-   FIX UNTUK INPUT FORMS - TEKS TERLIHAT
-   ======================================== */
-
-/* Fix untuk semua input, select, dan textarea agar teks selalu terlihat */
+/* Input Forms Fix */
 input,
 textarea,
 select {
@@ -933,7 +857,6 @@ select {
     background-color: #fff !important;
 }
 
-/* Override untuk form di modal edit */
 .modal-content input,
 .modal-content textarea,
 .modal-content select {
@@ -941,14 +864,12 @@ select {
     background-color: #fff !important;
 }
 
-/* Pastikan placeholder juga terlihat */
 input::placeholder,
 textarea::placeholder {
     color: #999 !important;
     opacity: 1 !important;
 }
 
-/* Fix khusus untuk contact form yang background gelap */
 .contact-form input,
 .contact-form textarea {
     color: #fff !important;
@@ -960,7 +881,6 @@ textarea::placeholder {
     color: #ccc !important;
 }
 
-/* Autofill styling untuk browser */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -978,7 +898,6 @@ select:-webkit-autofill:active {
     box-shadow: 0 0 0 30px white inset !important;
 }
 
-/* Fix autofill untuk contact form */
 .contact-form input:-webkit-autofill,
 .contact-form input:-webkit-autofill:hover,
 .contact-form input:-webkit-autofill:focus,
@@ -992,11 +911,7 @@ select:-webkit-autofill:active {
     box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.1) inset !important;
 }
 
-/* ========================================
-   GALLERY & ABOUT EDIT MODE
-   ======================================== */
-
-/* Gallery Item dengan Edit Actions */
+/* Gallery & About Edit Mode */
 .gallery-item-actions {
     display: none;
     position: absolute;
@@ -1037,7 +952,6 @@ select:-webkit-autofill:active {
     background: rgba(239, 68, 68, 0.9);
 }
 
-/* Add Project Button */
 .add-project-btn {
     position: fixed;
     bottom: 30px;
@@ -1066,7 +980,6 @@ select:-webkit-autofill:active {
     transform: scale(1.1);
 }
 
-/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
@@ -1192,6 +1105,7 @@ select:-webkit-autofill:active {
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s;
+    min-height: 48px;
 }
 
 .btn-primary:hover {
@@ -1213,6 +1127,7 @@ select:-webkit-autofill:active {
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s;
+    min-height: 48px;
 }
 
 .btn-secondary:hover {
@@ -1247,7 +1162,6 @@ select:-webkit-autofill:active {
     display: block;
 }
 
-/* About Page Edit Styles */
 .edit-section-btn {
     display: none;
     position: absolute;
@@ -1281,12 +1195,320 @@ select:-webkit-autofill:active {
     position: relative;
 }
 
-/* Responsive adjustments for admin buttons */
+/* ============================================
+   ✅ RESPONSIVE DESIGN - MOBILE OPTIMIZED
+   ============================================ */
+
+/* Tablet & Medium Screens */
+@media (max-width: 1200px) {
+    .nav-container {
+        padding: 0 2rem;
+    }
+    
+    .nav-menu {
+        gap: 2rem;
+        margin-right: 220px;
+    }
+    
+    .nav-menu a {
+        font-size: 1.05rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .nav-menu {
+        margin-right: 200px;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .contact-content {
+        gap: 3rem;
+    }
+}
+
+/* ✅ MOBILE STYLES - CRITICAL */
 @media (max-width: 768px) {
+    /* Show hamburger, hide desktop menu */
+    .hamburger {
+        display: block;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        padding: 80px 30px;
+        gap: 0;
+        margin-right: 0;
+        transition: right 0.3s ease;
+        z-index: 1000;
+    }
+
+    .nav-menu.active {
+        right: 0;
+    }
+
+    .nav-menu li {
+        width: 100%;
+    }
+
+    .nav-menu a {
+        color: #fff !important;
+        font-size: 1.2rem;
+        padding: 15px 0;
+        display: block;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        text-shadow: none !important;
+    }
+
+    .nav-menu a:hover {
+        color: #667eea !important;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 0.9rem 2rem;
+        font-size: 0.85rem;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .service-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .slide-nav {
+        padding: 0 1rem;
+    }
+
+    .prev-btn,
+    .next-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1rem;
+    }
+
+    .slide-indicators {
+        bottom: 20px;
+        gap: 10px;
+    }
+
+    .indicator {
+        width: 12px;
+        height: 12px;
+    }
+
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+
+    .section-title p {
+        font-size: 0.95rem;
+    }
+
+    .gallery-item {
+        height: 250px;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
     .admin-login-btn,
     .edit-mode-badge {
-        right: 20px !important;
-        padding: 10px 18px !important;
-        font-size: 0.85rem !important;
+        right: 15px !important;
+        top: 15px !important;
+        padding: 8px 16px !important;
+        font-size: 0.8rem !important;
+    }
+
+    .modal-content {
+        padding: 25px;
+        max-width: 95%;
+    }
+
+    .modal-header h2 {
+        font-size: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .btn-detail {
+        padding: 1rem 2rem;
+        font-size: 0.85rem;
+    }
+
+    .social-links a {
+        font-size: 1.3rem;
+        margin: 0 0.7rem;
+    }
+}
+
+/* Small Phones */
+@media (max-width: 576px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .gallery-item {
+        height: 220px;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-description {
+        font-size: 0.9rem;
+    }
+
+    .cta-button {
+        padding: 0.8rem 1.8rem;
+        font-size: 0.8rem;
+    }
+
+    .section-title h2 {
+        font-size: 1.5rem;
+    }
+
+    .contact-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .service-card h3 {
+        font-size: 1.3rem;
+    }
+
+    .nav-menu {
+        width: 80%;
+    }
+}
+
+/* Very Small Phones */
+@media (max-width: 400px) {
+    .logo {
+        font-size: 1.4rem;
+    }
+
+    .hero-title {
+        font-size: 1.6rem;
+        letter-spacing: -1px;
+    }
+
+    .hero-subtitle {
+        font-size: 0.75rem;
+    }
+
+    .hero-description {
+        font-size: 0.85rem;
+    }
+
+    .cta-button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.75rem;
+    }
+
+    .admin-login-btn,
+    .edit-mode-badge {
+        right: 10px !important;
+        top: 10px !important;
+        padding: 6px 12px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .admin-login-btn i,
+    .edit-mode-badge i {
+        margin-right: 4px;
+    }
+
+    .logout-btn {
+        padding: 4px 12px !important;
+        font-size: 0.7rem !important;
+    }
+
+    .modal-content {
+        padding: 20px;
+    }
+
+    .prev-btn,
+    .next-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 0.9rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    .services-grid {
+        gap: 1rem;
+    }
+
+    .service-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .service-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Landscape Mode Fix */
+@media (max-height: 500px) and (orientation: landscape) {
+    .hero {
+        height: auto;
+        min-height: 100vh;
+        padding: 100px 0 50px;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+    }
+
+    .slide-indicators {
+        bottom: 15px;
     }
 }
