@@ -11,12 +11,88 @@
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
     
-    <!-- Additional styles for About page -->
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: #000;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            color: #666;
+        }
+
+        .nav-menu a.active {
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        /* About Hero Section */
         .about-hero {
             padding: 120px 0 80px 0;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             text-align: center;
+            position: relative;
         }
         
         .about-hero h1 {
@@ -35,9 +111,11 @@
             margin: 0 auto;
         }
         
+        /* About Content */
         .about-content {
             padding: 80px 0;
             background: #fff;
+            position: relative;
         }
         
         .about-grid {
@@ -64,19 +142,52 @@
         }
         
         .about-image {
-            background: linear-gradient(45deg, #e9ecef, #f8f9fa);
+            background: #fff;
             aspect-ratio: 4/3;
-            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            color: #999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .about-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
         
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 2rem;
+        }
+        
+        /* Mission Vision */
         .mission-vision {
             background: #f8f9fa;
             padding: 80px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #000;
+            font-weight: 300;
+            letter-spacing: -1px;
+        }
+
+        .section-title p {
+            color: #666;
+            font-weight: 300;
         }
         
         .mv-grid {
@@ -88,15 +199,15 @@
         .mv-card {
             background: #fff;
             padding: 3rem 2rem;
-            border: 1px solid #e9ecef;
+            border-radius: 8px;
             text-align: center;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .mv-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border-color: #000;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
         .mv-card i {
@@ -118,9 +229,11 @@
             font-weight: 300;
         }
         
+        /* Values */
         .values {
             padding: 80px 0;
             background: #fff;
+            position: relative;
         }
         
         .values-grid {
@@ -159,10 +272,12 @@
             line-height: 1.6;
         }
         
+        /* Team Stats */
         .team {
             background: #464545;
             color: #fff;
             padding: 80px 0;
+            position: relative;
         }
         
         .team .section-title h2 {
@@ -185,6 +300,7 @@
             padding: 2rem;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
             transition: all 0.3s ease;
         }
         
@@ -204,18 +320,407 @@
             color: #ccc;
             font-weight: 300;
         }
-        
-        /* Navigation active state */
-        .nav-menu a.active {
-            color: #000 !important;
-            font-weight: 600;
+
+        /* Footer */
+        .footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
         }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #ccc;
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+            transform: scale(1.2);
+        }
+
+        /* ============================================
+           ADMIN & EDIT MODE STYLES
+           ============================================ */
         
-        .nav-menu a.active::after {
+        /* Admin Login Button */
+        .admin-login-btn {
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            color: white !important;
+            padding: 10px 20px !important;
+            border-radius: 50px !important;
+            border: none !important;
+            cursor: pointer !important;
+            font-weight: 600 !important;
+            z-index: 10001 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+            display: block !important;
+        }
+
+        .admin-login-btn:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+        }
+
+        .admin-login-btn i {
+            margin-right: 8px;
+        }
+
+        /* Edit Mode Badge */
+        .edit-mode-badge {
+            display: none !important;
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%) !important;
+            color: white !important;
+            padding: 10px 20px !important;
+            border-radius: 50px !important;
+            font-weight: 600 !important;
+            z-index: 10001 !important;
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4) !important;
+            gap: 15px !important;
+            align-items: center !important;
+        }
+
+        .edit-mode-badge.active {
+            display: flex !important;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: none !important;
+            padding: 5px 15px !important;
+            border-radius: 20px !important;
+            color: white !important;
+            cursor: pointer !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        /* ✅ EDIT BUTTONS FOR EACH SECTION */
+        .edit-section-btn {
+            position: absolute !important;
+            top: 20px !important;
+            right: 20px !important;
+            background: rgba(102, 126, 234, 0.95) !important;
+            color: white !important;
+            padding: 10px 20px !important;
+            border-radius: 50px !important;
+            border: 2px solid rgba(255, 255, 255, 0.3) !important;
+            cursor: pointer !important;
+            font-weight: 600 !important;
+            z-index: 100 !important;
+            transition: all 0.3s ease !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5) !important;
+            display: none !important;
+            font-size: 14px !important;
+            backdrop-filter: blur(10px) !important;
+        }
+
+        /* Special styling for Hero section edit button */
+        .about-hero .edit-section-btn {
+            background: rgba(102, 126, 234, 1) !important;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+        }
+
+        body.edit-mode .edit-section-btn {
+            display: inline-block !important;
+        }
+
+        .edit-section-btn:hover {
+            background: rgba(102, 126, 234, 1) !important;
+            transform: scale(1.05) !important;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6) !important;
+        }
+
+        .edit-section-btn i {
+            margin-right: 5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10002;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+            color: #333 !important;
+            background-color: #fff !important;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            background: #f1f1f1;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        /* Value/Stat Item Container in Modal */
+        .item-container {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .item-container h4 {
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 16px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .btn-add {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 15px;
+        }
+
+        .btn-add:hover {
+            background: #218838;
+        }
+
+        .icon-selector {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .icon-option {
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            font-size: 20px;
+        }
+
+        .icon-option:hover {
+            background: #f0f0f0;
+            transform: scale(1.1);
+        }
+
+        .icon-option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
         }
         
+        /* Responsive */
         @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
             .about-hero h1 {
                 font-size: 2.5rem;
             }
@@ -233,13 +738,258 @@
             .about-text h2 {
                 font-size: 2rem;
             }
+
+            .icon-selector {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
+    <!-- Admin Login Button -->
+    <button class="admin-login-btn" id="adminLoginBtn" onclick="openLoginModal()">
+        <i class="fas fa-lock"></i> Admin Login
+    </button>
+
+    <!-- Edit Mode Badge -->
+    <div class="edit-mode-badge" id="editModeBadge">
+        <span><i class="fas fa-edit"></i> Edit Mode ON</span>
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 Admin Login</h2>
+                <p>Works Glow Admin Panel</p>
+            </div>
+
+            <div class="error-message" id="loginError"></div>
+
+            <form id="adminLoginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" name="username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" name="password" required autocomplete="current-password">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary" id="loginSubmitBtn">
+                        Login
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeLoginModal()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ MODAL 1: Edit Hero -->
+    <div class="modal" id="editHeroModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Hero Section</h2>
+                <p>Update main title and subtitle</p>
+            </div>
+
+            <div class="error-message" id="heroError"></div>
+            <div class="success-message" id="heroSuccess"></div>
+
+            <form id="heroEditForm" onsubmit="handleHeroUpdate(event)">
+                <div class="form-group">
+                    <label for="heroTitleInput">Main Title</label>
+                    <input type="text" id="heroTitleInput" value="Tentang Works Glow">
+                </div>
+                <div class="form-group">
+                    <label for="heroSubtitleInput">Subtitle</label>
+                    <textarea id="heroSubtitleInput" rows="3">Bengkel cat profesional yang telah dipercaya sejak 2015, menghadirkan inovasi dan kualitas terbaik dalam setiap layanan</textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editHeroModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ MODAL 2: Edit History -->
+    <div class="modal" id="editHistoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Sejarah Kami</h2>
+                <p>Update history section</p>
+            </div>
+
+            <div class="error-message" id="historyError"></div>
+            <div class="success-message" id="historySuccess"></div>
+
+            <form id="historyEditForm" onsubmit="handleHistoryUpdate(event)">
+                <div class="form-group">
+                    <label for="historyTitleInput">Title</label>
+                    <input type="text" id="historyTitleInput" value="Sejarah Kami">
+                </div>
+                <div class="form-group">
+                    <label for="historyPara1Input">Paragraph 1</label>
+                    <textarea id="historyPara1Input" rows="3">Works Glow didirikan pada tahun 2015 dengan visi menjadi bengkel cat terdepan di Indonesia. Dimulai dari sebuah workshop kecil, kami terus berkembang dengan mengedepankan kualitas dan inovasi dalam setiap pekerjaan.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="historyPara2Input">Paragraph 2</label>
+                    <textarea id="historyPara2Input" rows="3">Dengan pengalaman lebih dari 8 tahun, kami telah menangani ribuan kendaraan dan memberikan kepuasan maksimal kepada pelanggan. Tim profesional kami selalu menggunakan teknologi terdepan dan bahan berkualitas premium.</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="historyPara3Input">Paragraph 3</label>
+                    <textarea id="historyPara3Input" rows="3">Kepercayaan pelanggan adalah aset terbesar kami, dan kami berkomitmen untuk terus memberikan hasil terbaik dengan standar internasional.</textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editHistoryModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ MODAL 3: Edit Vision & Mission -->
+    <div class="modal" id="editVisionMissionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Visi & Misi</h2>
+                <p>Update vision and mission</p>
+            </div>
+
+            <div class="error-message" id="visionMissionError"></div>
+            <div class="success-message" id="visionMissionSuccess"></div>
+
+            <form id="visionMissionEditForm" onsubmit="handleVisionMissionUpdate(event)">
+                <h3 style="margin-bottom: 15px; color: #333;">Visi</h3>
+                <div class="form-group">
+                    <label for="visionContentInput">Visi Content</label>
+                    <textarea id="visionContentInput" rows="4">Menjadi bengkel cat kendaraan terdepan di Indonesia yang dikenal dengan kualitas premium, inovasi teknologi, dan pelayanan terbaik untuk menciptakan hasil yang memukau dan memuaskan setiap pelanggan.</textarea>
+                </div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 2px solid #f0f0f0;">
+
+                <h3 style="margin-bottom: 15px; color: #333;">Misi</h3>
+                <div class="form-group">
+                    <label for="missionContentInput">Misi Content</label>
+                    <textarea id="missionContentInput" rows="4">Memberikan layanan cat kendaraan berkualitas tinggi dengan menggunakan teknologi terdepan, tenaga ahli profesional, dan material premium untuk menghasilkan karya seni yang tahan lama dan membanggakan.</textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editVisionMissionModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ MODAL 4: Edit Values Section -->
+    <div class="modal" id="editValuesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Nilai-Nilai Kami</h2>
+                <p>Update section title and all values</p>
+            </div>
+
+            <div class="error-message" id="valuesError"></div>
+            <div class="success-message" id="valuesSuccess"></div>
+
+            <form id="valuesEditForm" onsubmit="handleValuesUpdate(event)">
+                <div class="form-group">
+                    <label for="valuesSectionTitle">Section Title</label>
+                    <input type="text" id="valuesSectionTitle" value="Nilai-Nilai Kami">
+                </div>
+                
+                <div class="form-group">
+                    <label for="valuesSectionSubtitle">Section Subtitle</label>
+                    <input type="text" id="valuesSectionSubtitle" value="Prinsip yang menjadi fondasi dalam setiap layanan Works Glow">
+                </div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 2px solid #f0f0f0;">
+
+                <div id="valuesItemsContainer">
+                    <!-- Values items will be dynamically added here -->
+                </div>
+
+                <button type="button" class="btn-add" onclick="addValueItem()">
+                    <i class="fas fa-plus"></i> Add New Value
+                </button>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editValuesModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ✅ MODAL 5: Edit Stats Section -->
+    <div class="modal" id="editStatsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Works Glow dalam Angka</h2>
+                <p>Update section title and all statistics</p>
+            </div>
+
+            <div class="error-message" id="statsError"></div>
+            <div class="success-message" id="statsSuccess"></div>
+
+            <form id="statsEditForm" onsubmit="handleStatsUpdate(event)">
+                <div class="form-group">
+                    <label for="statsSectionTitle">Section Title</label>
+                    <input type="text" id="statsSectionTitle" value="Works Glow dalam Angka">
+                </div>
+                
+                <div class="form-group">
+                    <label for="statsSectionSubtitle">Section Subtitle</label>
+                    <input type="text" id="statsSectionSubtitle" value="Prestasi dan pencapaian yang membanggakan sepanjang perjalanan kami">
+                </div>
+
+                <hr style="margin: 25px 0; border: none; border-top: 2px solid #f0f0f0;">
+
+                <div id="statsItemsContainer">
+                    <!-- Stats items will be dynamically added here -->
+                </div>
+
+                <button type="button" class="btn-add" onclick="addStatItem()">
+                    <i class="fas fa-plus"></i> Add New Statistic
+                </button>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editStatsModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Navigation -->
@@ -249,130 +999,93 @@
             <ul class="nav-menu">
                 <li><a href="index.html">Beranda</a></li>
                 <li><a href="index.html#services">Layanan</a></li>
-                <li><a href="index.html#gallery">Galeri</a></li>
+                <li><a href="gallery.html">Galeri</a></li>
                 <li><a href="about.html" class="active">About Us</a></li>
                 <li><a href="index.html#contact">Kontak</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- About Hero Section -->
-    <section class="about-hero">
-        <div class="container">
-            <h1>Tentang Works Glow</h1>
-            <p>Bengkel cat profesional yang telah dipercaya sejak 2015, menghadirkan inovasi dan kualitas terbaik dalam setiap layanan</p>
+    <!-- ✅ SECTION 1: About Hero -->
+    <section class="about-hero" style="position: relative;">
+        <div class="container" style="position: relative;">
+            <button class="edit-section-btn" onclick="openModal('editHeroModal')">
+                <i class="fas fa-edit"></i> Edit Hero
+            </button>
+            <h1 id="heroTitle">Tentang Works Glow</h1>
+            <p id="heroSubtitle">Bengkel cat profesional yang telah dipercaya sejak 2015, menghadirkan inovasi dan kualitas terbaik dalam setiap layanan</p>
         </div>
     </section>
 
-    <!-- About Content -->
-    <section class="about-content">
+    <!-- ✅ SECTION 2: About Content / History -->
+    <section class="about-content" style="position: relative;">
+        <button class="edit-section-btn" onclick="openModal('editHistoryModal')">
+            <i class="fas fa-edit"></i> Edit History
+        </button>
         <div class="container">
             <div class="about-grid">
                 <div class="about-text">
-                    <h2>Sejarah Kami</h2>
-                    <p>Works Glow didirikan pada tahun 2015 dengan visi menjadi bengkel cat terdepan di Indonesia. Dimulai dari sebuah workshop kecil, kami terus berkembang dengan mengedepankan kualitas dan inovasi dalam setiap pekerjaan.</p>
-                    <p>Dengan pengalaman lebih dari 8 tahun, kami telah menangani ribuan kendaraan dan memberikan kepuasan maksimal kepada pelanggan. Tim profesional kami selalu menggunakan teknologi terdepan dan bahan berkualitas premium.</p>
-                    <p>Kepercayaan pelanggan adalah aset terbesar kami, dan kami berkomitmen untuk terus memberikan hasil terbaik dengan standar internasional.</p>
+                    <h2 id="historyTitle">Sejarah Kami</h2>
+                    <p id="historyPara1">Works Glow didirikan pada tahun 2015 dengan visi menjadi bengkel cat terdepan di Indonesia. Dimulai dari sebuah workshop kecil, kami terus berkembang dengan mengedepankan kualitas dan inovasi dalam setiap pekerjaan.</p>
+                    <p id="historyPara2">Dengan pengalaman lebih dari 8 tahun, kami telah menangani ribuan kendaraan dan memberikan kepuasan maksimal kepada pelanggan. Tim profesional kami selalu menggunakan teknologi terdepan dan bahan berkualitas premium.</p>
+                    <p id="historyPara3">Kepercayaan pelanggan adalah aset terbesar kami, dan kami berkomitmen untuk terus memberikan hasil terbaik dengan standar internasional.</p>
                 </div>
                 <div class="about-image">
-                    <img src="image/logo/Works Glow.png" alt="Works Glow Workshop">
+                    <img src="image/logo/Works Glow.png" alt="Works Glow Workshop" id="historyImage">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Mission & Vision -->
-    <section class="mission-vision">
+    <!-- ✅ SECTION 3: Mission & Vision -->
+    <section class="mission-vision" style="position: relative;">
+        <button class="edit-section-btn" onclick="openModal('editVisionMissionModal')">
+            <i class="fas fa-edit"></i> Edit Visi & Misi
+        </button>
         <div class="container">
             <div class="mv-grid">
                 <div class="mv-card">
-                    <i class="fas fa-eye"></i>
-                    <h3>Visi</h3>
-                    <p>Menjadi bengkel cat kendaraan terdepan di Indonesia yang dikenal dengan kualitas premium, inovasi teknologi, dan pelayanan terbaik untuk menciptakan hasil yang memukau dan memuaskan setiap pelanggan.</p>
+                    <i class="fas fa-eye" id="visionIcon"></i>
+                    <h3 id="visionTitle">Visi</h3>
+                    <p id="visionContent">Menjadi bengkel cat kendaraan terdepan di Indonesia yang dikenal dengan kualitas premium, inovasi teknologi, dan pelayanan terbaik untuk menciptakan hasil yang memukau dan memuaskan setiap pelanggan.</p>
                 </div>
                 <div class="mv-card">
-                    <i class="fas fa-bullseye"></i>
-                    <h3>Misi</h3>
-                    <p>Memberikan layanan cat kendaraan berkualitas tinggi dengan menggunakan teknologi terdepan, tenaga ahli profesional, dan material premium untuk menghasilkan karya seni yang tahan lama dan membanggakan.</p>
+                    <i class="fas fa-bullseye" id="missionIcon"></i>
+                    <h3 id="missionTitle">Misi</h3>
+                    <p id="missionContent">Memberikan layanan cat kendaraan berkualitas tinggi dengan menggunakan teknologi terdepan, tenaga ahli profesional, dan material premium untuk menghasilkan karya seni yang tahan lama dan membanggakan.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Values -->
-    <section class="values">
+    <!-- ✅ SECTION 4: Values -->
+    <section class="values" style="position: relative;">
+        <button class="edit-section-btn" onclick="openModal('editValuesModal')">
+            <i class="fas fa-edit"></i> Edit Nilai-Nilai
+        </button>
         <div class="container">
             <div class="section-title">
-                <h2>Nilai-Nilai Kami</h2>
-                <p>Prinsip yang menjadi fondasi dalam setiap layanan Works Glow</p>
+                <h2 id="valuesTitle">Nilai-Nilai Kami</h2>
+                <p id="valuesSubtitle">Prinsip yang menjadi fondasi dalam setiap layanan Works Glow</p>
             </div>
-            <div class="values-grid">
-                <div class="value-item">
-                    <i class="fas fa-star"></i>
-                    <h4>Kualitas Premium</h4>
-                    <p>Menggunakan cat dan material terbaik dengan standar internasional untuk hasil yang sempurna dan tahan lama.</p>
-                </div>
-                <div class="value-item">
-                    <i class="fas fa-users"></i>
-                    <h4>Profesionalisme</h4>
-                    <p>Tim ahli dengan pengalaman bertahun-tahun yang selalu mengutamakan kepuasan dan kepercayaan pelanggan.</p>
-                </div>
-                <div class="value-item">
-                    <i class="fas fa-lightbulb"></i>
-                    <h4>Inovasi</h4>
-                    <p>Selalu mengikuti perkembangan teknologi terbaru dalam industri cat kendaraan untuk hasil yang optimal.</p>
-                </div>
-                <div class="value-item">
-                    <i class="fas fa-clock"></i>
-                    <h4>Ketepatan Waktu</h4>
-                    <p>Menghargai waktu pelanggan dengan menyelesaikan setiap pekerjaan sesuai jadwal yang telah disepakati.</p>
-                </div>
-                <div class="value-item">
-                    <i class="fas fa-handshake"></i>
-                    <h4>Integritas</h4>
-                    <p>Berkomitmen pada kejujuran, transparansi, dan memberikan pelayanan yang fair kepada semua pelanggan.</p>
-                </div>
-                <div class="value-item">
-                    <i class="fas fa-heart"></i>
-                    <h4>Passion</h4>
-                    <p>Mengerjakan setiap proyek dengan dedikasi tinggi dan cinta terhadap seni dalam dunia otomotif.</p>
-                </div>
+            <div class="values-grid" id="valuesGrid">
+                <!-- Values will be loaded here -->
             </div>
         </div>
     </section>
 
-    <!-- Team Stats -->
-    <section class="team">
+    <!-- ✅ SECTION 5: Team Stats -->
+    <section class="team" style="position: relative;">
+        <button class="edit-section-btn" onclick="openModal('editStatsModal')">
+            <i class="fas fa-edit"></i> Edit Stats
+        </button>
         <div class="container">
             <div class="section-title">
-                <h2>Works Glow dalam Angka</h2>
-                <p>Prestasi dan pencapaian yang membanggakan sepanjang perjalanan kami</p>
+                <h2 id="statsTitle">Works Glow dalam Angka</h2>
+                <p id="statsSubtitle">Prestasi dan pencapaian yang membanggakan sepanjang perjalanan kami</p>
             </div>
-            <div class="team-stats">
-                <div class="stat-item">
-                    <div class="stat-number">8+</div>
-                    <div class="stat-label">Tahun Pengalaman</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">2500+</div>
-                    <div class="stat-label">Kendaraan Ditangani</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Kepuasan Pelanggan</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">15+</div>
-                    <div class="stat-label">Tim Profesional</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Proyek Custom</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Bergaransi</div>
-                </div>
+            <div class="team-stats" id="teamStats">
+                <!-- Stats will be loaded here -->
             </div>
         </div>
     </section>
@@ -384,14 +1097,619 @@
             <div class="social-links">
                 <a href="https://www.instagram.com/works_glow/"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="mailto: works.glows@gmail.com"><i class="fa-brands fa-google"></i></a>
+                <a href="mailto:works.glows@gmail.com"><i class="fa-brands fa-google"></i></a>
                 <a href="https://wa.me/6285606296686"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.tiktok.com/@works_glow?_t=ZS-8zXxBCqy5K4&_r=1"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.tiktok.com/@works_glow"><i class="fab fa-tiktok"></i></a>
             </div>
         </div>
     </footer>
 
-    <!-- External JavaScript -->
-    <script src="script.js"></script>
+    <script>
+        // ============================================
+        // Auth State
+        // ============================================
+        let authToken = localStorage.getItem('adminToken');
+        let isEditMode = false;
+        let aboutData = null;
+
+        // Available icons for selection
+        const availableIcons = [
+            'fa-star', 'fa-users', 'fa-lightbulb', 'fa-clock', 'fa-handshake', 'fa-heart',
+            'fa-award', 'fa-trophy', 'fa-medal', 'fa-certificate', 'fa-shield-alt', 'fa-thumbs-up',
+            'fa-check-circle', 'fa-crown', 'fa-gem', 'fa-fire', 'fa-bolt', 'fa-rocket',
+            'fa-bullseye', 'fa-target', 'fa-crosshairs', 'fa-compress-arrows-alt', 'fa-tools', 'fa-cogs',
+            'fa-wrench', 'fa-hammer', 'fa-paint-brush', 'fa-palette', 'fa-magic', 'fa-sparkles'
+        ];
+
+        // ============================================
+        // Load About Data from Database
+        // ============================================
+        async function loadAboutData() {
+            try {
+                console.log('🔄 Loading about data from database...');
+                const response = await fetch('http://localhost:3000/api/about');
+                const data = await response.json();
+
+                console.log('📥 About data:', data);
+
+                if (data.status === 'success' && data.data) {
+                    aboutData = data.data;
+                    updateAboutDisplay(data.data);
+                    populateAllForms(data.data);
+                    console.log('✅ About data loaded from database');
+                }
+            } catch (error) {
+                console.error('❌ Failed to load about data:', error);
+                loadDefaultData();
+            }
+        }
+
+        // ============================================
+        // Load Default Data (Fallback)
+        // ============================================
+        function loadDefaultData() {
+            const defaultValues = [
+                { icon: "fa-star", title: "Kualitas Premium", description: "Menggunakan cat dan material terbaik dengan standar internasional untuk hasil yang sempurna dan tahan lama." },
+                { icon: "fa-users", title: "Profesionalisme", description: "Tim ahli dengan pengalaman bertahun-tahun yang selalu mengutamakan kepuasan dan kepercayaan pelanggan." },
+                { icon: "fa-lightbulb", title: "Inovasi", description: "Selalu mengikuti perkembangan teknologi terbaru dalam industri cat kendaraan untuk hasil yang optimal." },
+                { icon: "fa-clock", title: "Ketepatan Waktu", description: "Menghargai waktu pelanggan dengan menyelesaikan setiap pekerjaan sesuai jadwal yang telah disepakati." },
+                { icon: "fa-handshake", title: "Integritas", description: "Berkomitmen pada kejujuran, transparansi, dan memberikan pelayanan yang fair kepada semua pelanggan." },
+                { icon: "fa-heart", title: "Passion", description: "Mengerjakan setiap proyek dengan dedikasi tinggi dan cinta terhadap seni dalam dunia otomotif." }
+            ];
+
+            const defaultStats = [
+                {number: "8+", label: "Tahun Pengalaman"},
+                {number: "2500+", label: "Kendaraan Ditangani"},
+                {number: "98%", label: "Kepuasan Pelanggan"},
+                {number: "15+", label: "Tim Profesional"},
+                {number: "50+", label: "Proyek Custom"},
+                {number: "100%", label: "Bergaransi"}
+            ];
+
+            renderValues(defaultValues);
+            renderStats(defaultStats);
+        }
+
+        // ============================================
+        // Update Display
+        // ============================================
+        function updateAboutDisplay(data) {
+            if (data.hero) {
+                document.getElementById('heroTitle').textContent = data.hero.title || '';
+                document.getElementById('heroSubtitle').textContent = data.hero.subtitle || '';
+            }
+
+            if (data.history) {
+                document.getElementById('historyTitle').textContent = data.history.title || '';
+                if (data.history.paragraphs) {
+                    document.getElementById('historyPara1').textContent = data.history.paragraphs[0] || '';
+                    document.getElementById('historyPara2').textContent = data.history.paragraphs[1] || '';
+                    document.getElementById('historyPara3').textContent = data.history.paragraphs[2] || '';
+                }
+            }
+
+            if (data.vision) {
+                document.getElementById('visionContent').textContent = data.vision.content || '';
+            }
+
+            if (data.mission) {
+                document.getElementById('missionContent').textContent = data.mission.content || '';
+            }
+
+            if (data.values) {
+                document.getElementById('valuesTitle').textContent = data.values.title || 'Nilai-Nilai Kami';
+                document.getElementById('valuesSubtitle').textContent = data.values.subtitle || '';
+                if (data.values.items) renderValues(data.values.items);
+            }
+
+            if (data.stats) {
+                document.getElementById('statsTitle').textContent = data.stats.title || 'Works Glow dalam Angka';
+                document.getElementById('statsSubtitle').textContent = data.stats.subtitle || '';
+                if (data.stats.items) renderStats(data.stats.items);
+            }
+        }
+
+        function renderValues(values) {
+            const valuesGrid = document.getElementById('valuesGrid');
+            valuesGrid.innerHTML = values.map(v => `
+                <div class="value-item">
+                    <i class="fas ${v.icon}"></i>
+                    <h4>${v.title}</h4>
+                    <p>${v.description}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderStats(stats) {
+            const teamStats = document.getElementById('teamStats');
+            teamStats.innerHTML = stats.map(s => `
+                <div class="stat-item">
+                    <div class="stat-number">${s.number}</div>
+                    <div class="stat-label">${s.label}</div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // Populate Forms
+        // ============================================
+        function populateAllForms(data) {
+            if (data.hero) {
+                document.getElementById('heroTitleInput').value = data.hero.title || '';
+                document.getElementById('heroSubtitleInput').value = data.hero.subtitle || '';
+            }
+
+            if (data.history) {
+                document.getElementById('historyTitleInput').value = data.history.title || '';
+                if (data.history.paragraphs) {
+                    document.getElementById('historyPara1Input').value = data.history.paragraphs[0] || '';
+                    document.getElementById('historyPara2Input').value = data.history.paragraphs[1] || '';
+                    document.getElementById('historyPara3Input').value = data.history.paragraphs[2] || '';
+                }
+            }
+
+            if (data.vision) {
+                document.getElementById('visionContentInput').value = data.vision.content || '';
+            }
+
+            if (data.mission) {
+                document.getElementById('missionContentInput').value = data.mission.content || '';
+            }
+
+            if (data.values) {
+                document.getElementById('valuesSectionTitle').value = data.values.title || 'Nilai-Nilai Kami';
+                document.getElementById('valuesSectionSubtitle').value = data.values.subtitle || '';
+                if (data.values.items) populateValuesForm(data.values.items);
+            }
+
+            if (data.stats) {
+                document.getElementById('statsSectionTitle').value = data.stats.title || 'Works Glow dalam Angka';
+                document.getElementById('statsSectionSubtitle').value = data.stats.subtitle || '';
+                if (data.stats.items) populateStatsForm(data.stats.items);
+            }
+        }
+
+        // ============================================
+        // Values Form Management
+        // ============================================
+        function populateValuesForm(values) {
+            const container = document.getElementById('valuesItemsContainer');
+            container.innerHTML = '';
+            values.forEach((value, index) => {
+                addValueItem(value, index);
+            });
+        }
+
+        function addValueItem(data = null, index = null) {
+            const container = document.getElementById('valuesItemsContainer');
+            const itemIndex = index !== null ? index : container.children.length;
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-container';
+            itemDiv.innerHTML = `
+                <div class="item-header">
+                    <h4>Value Item ${itemIndex + 1}</h4>
+                    <button type="button" class="btn-danger" onclick="removeValueItem(this)">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label>Icon</label>
+                    <input type="hidden" class="value-icon-input" value="${data ? data.icon : 'fa-star'}">
+                    <div class="icon-selector">
+                        ${availableIcons.map(icon => `
+                            <div class="icon-option ${data && data.icon === icon ? 'selected' : ''}" data-icon="${icon}" onclick="selectValueIcon(this)">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="value-title-input" value="${data ? data.title : ''}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="value-description-input" rows="3" required>${data ? data.description : ''}</textarea>
+                </div>
+            `;
+            
+            container.appendChild(itemDiv);
+        }
+
+        function removeValueItem(btn) {
+            if (confirm('Yakin ingin menghapus value item ini?')) {
+                btn.closest('.item-container').remove();
+                updateValueItemNumbers();
+            }
+        }
+
+        function updateValueItemNumbers() {
+            const items = document.querySelectorAll('#valuesItemsContainer .item-container');
+            items.forEach((item, index) => {
+                item.querySelector('h4').textContent = `Value Item ${index + 1}`;
+            });
+        }
+
+        function selectValueIcon(element) {
+            const container = element.closest('.item-container');
+            container.querySelectorAll('.icon-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            container.querySelector('.value-icon-input').value = element.dataset.icon;
+        }
+
+        // ============================================
+        // Stats Form Management
+        // ============================================
+        function populateStatsForm(stats) {
+            const container = document.getElementById('statsItemsContainer');
+            container.innerHTML = '';
+            stats.forEach((stat, index) => {
+                addStatItem(stat, index);
+            });
+        }
+
+        function addStatItem(data = null, index = null) {
+            const container = document.getElementById('statsItemsContainer');
+            const itemIndex = index !== null ? index : container.children.length;
+            
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'item-container';
+            itemDiv.innerHTML = `
+                <div class="item-header">
+                    <h4>Statistic ${itemIndex + 1}</h4>
+                    <button type="button" class="btn-danger" onclick="removeStatItem(this)">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label>Number/Value</label>
+                    <input type="text" class="stat-number-input" value="${data ? data.number : ''}" required placeholder="e.g., 8+, 2500+, 98%">
+                </div>
+
+                <div class="form-group">
+                    <label>Label/Description</label>
+                    <input type="text" class="stat-label-input" value="${data ? data.label : ''}" required placeholder="e.g., Tahun Pengalaman">
+                </div>
+            `;
+            
+            container.appendChild(itemDiv);
+        }
+
+        function removeStatItem(btn) {
+            if (confirm('Yakin ingin menghapus statistic item ini?')) {
+                btn.closest('.item-container').remove();
+                updateStatItemNumbers();
+            }
+        }
+
+        function updateStatItemNumbers() {
+            const items = document.querySelectorAll('#statsItemsContainer .item-container');
+            items.forEach((item, index) => {
+                item.querySelector('h4').textContent = `Statistic ${index + 1}`;
+            });
+        }
+
+        // ============================================
+        // DOMContentLoaded
+        // ============================================
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Page loaded');
+            loadAboutData();
+            if (authToken) verifyToken();
+        });
+
+        // ============================================
+        // Modal Management
+        // ============================================
+        function openModal(modalId) {
+            // Reload form data when opening any edit modal
+            if (aboutData) {
+                if (modalId === 'editHeroModal' && aboutData.hero) {
+                    document.getElementById('heroTitleInput').value = aboutData.hero.title || 'Tentang Works Glow';
+                    document.getElementById('heroSubtitleInput').value = aboutData.hero.subtitle || '';
+                }
+                
+                if (modalId === 'editHistoryModal' && aboutData.history) {
+                    document.getElementById('historyTitleInput').value = aboutData.history.title || 'Sejarah Kami';
+                    if (aboutData.history.paragraphs) {
+                        document.getElementById('historyPara1Input').value = aboutData.history.paragraphs[0] || '';
+                        document.getElementById('historyPara2Input').value = aboutData.history.paragraphs[1] || '';
+                        document.getElementById('historyPara3Input').value = aboutData.history.paragraphs[2] || '';
+                    }
+                }
+                
+                if (modalId === 'editVisionMissionModal') {
+                    if (aboutData.vision) {
+                        document.getElementById('visionContentInput').value = aboutData.vision.content || '';
+                    }
+                    if (aboutData.mission) {
+                        document.getElementById('missionContentInput').value = aboutData.mission.content || '';
+                    }
+                }
+                
+                if (modalId === 'editValuesModal' && aboutData.values) {
+                    document.getElementById('valuesSectionTitle').value = aboutData.values.title || 'Nilai-Nilai Kami';
+                    document.getElementById('valuesSectionSubtitle').value = aboutData.values.subtitle || '';
+                    populateValuesForm(aboutData.values.items || []);
+                }
+                
+                if (modalId === 'editStatsModal' && aboutData.stats) {
+                    document.getElementById('statsSectionTitle').value = aboutData.stats.title || 'Works Glow dalam Angka';
+                    document.getElementById('statsSectionSubtitle').value = aboutData.stats.subtitle || '';
+                    populateStatsForm(aboutData.stats.items || []);
+                }
+            }
+
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            const errorDiv = document.querySelector(`#${modalId} .error-message`);
+            const successDiv = document.querySelector(`#${modalId} .success-message`);
+            if (errorDiv) errorDiv.classList.remove('active');
+            if (successDiv) successDiv.classList.remove('active');
+        }
+
+        function openLoginModal() {
+            openModal('loginModal');
+            document.getElementById('adminUsername').focus();
+        }
+
+        function closeLoginModal() {
+            closeModal('loginModal');
+            document.getElementById('adminLoginForm').reset();
+        }
+
+        // ============================================
+        // Handle Login
+        // ============================================
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const errorDiv = document.getElementById('loginError');
+            
+            errorDiv.classList.remove('active');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Logging in...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
+                
+                if (response.ok && data.status === 'success') {
+                    authToken = data.data.token;
+                    localStorage.setItem('adminToken', authToken);
+                    localStorage.setItem('adminUser', JSON.stringify(data.data.user));
+                    
+                    closeLoginModal();
+                    enableEditMode();
+                    
+                    alert('✅ Login berhasil! Edit Mode ON');
+                } else {
+                    errorDiv.textContent = data.message || 'Login gagal';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
+                errorDiv.textContent = 'Gagal terhubung ke server';
+                errorDiv.classList.add('active');
+            }
+        }
+
+        async function verifyToken() {
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/me', {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (response.ok) enableEditMode();
+                else logout();
+            } catch (error) {
+                console.error('Token verification failed:', error);
+            }
+        }
+
+        function enableEditMode() {
+            isEditMode = true;
+            document.body.classList.add('edit-mode');
+            document.getElementById('adminLoginBtn').style.display = 'none';
+            document.getElementById('editModeBadge').classList.add('active');
+            console.log('✅ Edit mode enabled');
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                authToken = null;
+                isEditMode = false;
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminUser');
+                
+                document.body.classList.remove('edit-mode');
+                document.getElementById('adminLoginBtn').style.display = 'block';
+                document.getElementById('editModeBadge').classList.remove('active');
+                
+                alert('✅ Logout berhasil!');
+            }
+        }
+
+        // ============================================
+        // ✅ UPDATE HANDLERS FOR EACH SECTION
+        // ============================================
+
+        // Hero Update
+        async function handleHeroUpdate(event) {
+            event.preventDefault();
+            await updateSection('editHeroModal', 'heroError', 'heroSuccess', {
+                hero: {
+                    title: document.getElementById('heroTitleInput').value,
+                    subtitle: document.getElementById('heroSubtitleInput').value
+                }
+            });
+        }
+
+        // History Update
+        async function handleHistoryUpdate(event) {
+            event.preventDefault();
+            await updateSection('editHistoryModal', 'historyError', 'historySuccess', {
+                history: {
+                    title: document.getElementById('historyTitleInput').value,
+                    paragraphs: [
+                        document.getElementById('historyPara1Input').value,
+                        document.getElementById('historyPara2Input').value,
+                        document.getElementById('historyPara3Input').value
+                    ],
+                    image: "image/logo/Works Glow.png"
+                }
+            });
+        }
+
+        // Vision & Mission Update
+        async function handleVisionMissionUpdate(event) {
+            event.preventDefault();
+            await updateSection('editVisionMissionModal', 'visionMissionError', 'visionMissionSuccess', {
+                vision: {
+                    title: "Visi",
+                    content: document.getElementById('visionContentInput').value,
+                    icon: "fa-eye"
+                },
+                mission: {
+                    title: "Misi",
+                    content: document.getElementById('missionContentInput').value,
+                    icon: "fa-bullseye"
+                }
+            });
+        }
+
+        // Values Update
+        async function handleValuesUpdate(event) {
+            event.preventDefault();
+            
+            const items = [];
+            const containers = document.querySelectorAll('#valuesItemsContainer .item-container');
+            
+            containers.forEach(container => {
+                items.push({
+                    icon: container.querySelector('.value-icon-input').value,
+                    title: container.querySelector('.value-title-input').value,
+                    description: container.querySelector('.value-description-input').value
+                });
+            });
+
+            await updateSection('editValuesModal', 'valuesError', 'valuesSuccess', {
+                values: {
+                    title: document.getElementById('valuesSectionTitle').value,
+                    subtitle: document.getElementById('valuesSectionSubtitle').value,
+                    items: items
+                }
+            });
+        }
+
+        // Stats Update
+        async function handleStatsUpdate(event) {
+            event.preventDefault();
+            
+            const items = [];
+            const containers = document.querySelectorAll('#statsItemsContainer .item-container');
+            
+            containers.forEach(container => {
+                items.push({
+                    number: container.querySelector('.stat-number-input').value,
+                    label: container.querySelector('.stat-label-input').value
+                });
+            });
+
+            await updateSection('editStatsModal', 'statsError', 'statsSuccess', {
+                stats: {
+                    title: document.getElementById('statsSectionTitle').value,
+                    subtitle: document.getElementById('statsSectionSubtitle').value,
+                    items: items
+                }
+            });
+        }
+
+        // Generic Update Function
+        async function updateSection(modalId, errorId, successId, sections) {
+            const submitBtn = document.querySelector(`#${modalId} .btn-primary`);
+            const errorDiv = document.getElementById(errorId);
+            const successDiv = document.getElementById(successId);
+            
+            errorDiv.classList.remove('active');
+            successDiv.classList.remove('active');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/about/update-all', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ sections })
+                });
+                
+                const data = await response.json();
+                
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                
+                if (response.ok && data.status === 'success') {
+                    successDiv.textContent = '✅ Updated successfully!';
+                    successDiv.classList.add('active');
+                    
+                    await loadAboutData();
+                    
+                    setTimeout(() => {
+                        closeModal(modalId);
+                        successDiv.classList.remove('active');
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.message || 'Failed to update';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                errorDiv.textContent = 'Failed to connect to server';
+                errorDiv.classList.add('active');
+            }
+        }
+
+        // Close modal handlers
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) closeModal(this.id);
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

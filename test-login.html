@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - Works Glow Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .response.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .response.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+
+        .response h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .response pre {
+            background: rgba(0,0,0,0.05);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .default-creds {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .default-creds strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+            color: #667eea;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .test-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #eee;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .test-button {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            margin-top: 10px;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            color: #004085;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .token-display {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            word-wrap: break-word;
+            font-size: 12px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Login API</h1>
+        <p class="subtitle">Works Glow Admin Authentication Test</p>
+
+        <div class="default-creds">
+            <strong>📝 Default Admin Credentials:</strong>
+            Username: <strong>admin</strong><br>
+            Password: <strong>admin123</strong>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="admin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" value="admin123" required>
+            </div>
+
+            <button type="submit" id="loginBtn">Login</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <p>⏳ Logging in...</p>
+        </div>
+
+        <div class="response" id="response"></div>
+
+        <!-- Test Protected Route Section -->
+        <div class="test-section" id="testSection" style="display: none;">
+            <h2>🔐 Test Protected Route</h2>
+            <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                Click button below to test /api/auth/me endpoint with your token
+            </p>
+            <button class="test-button" onclick="testProtectedRoute()">
+                Test Get Current User
+            </button>
+            <div class="response" id="protectedResponse"></div>
+        </div>
+
+        <div class="info-box">
+            <strong>ℹ️ How This Works:</strong><br>
+            1. Enter credentials and click Login<br>
+            2. If successful, you'll receive a JWT token<br>
+            3. Use the token to test protected routes<br>
+            4. Token expires in 24 hours
+        </div>
+    </div>
+
+    <script>
+        let authToken = null;
+
+        // Handle Login Form Submit
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loading = document.getElementById('loading');
+            const responseDiv = document.getElementById('response');
+            
+            // Clear previous response
+            responseDiv.className = 'response';
+            responseDiv.style.display = 'none';
+            
+            // Show loading
+            loginBtn.disabled = true;
+            loading.classList.add('active');
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading
+                loading.classList.remove('active');
+                loginBtn.disabled = false;
+                
+                if (response.ok && data.status === 'success') {
+                    // Success
+                    authToken = data.data.token;
+                    responseDiv.className = 'response success';
+                    responseDiv.innerHTML = `
+                        <h3>✅ Login Successful!</h3>
+                        <p><strong>User:</strong> ${data.data.user.username}</p>
+                        <p><strong>Email:</strong> ${data.data.user.email}</p>
+                        <p><strong>Full Name:</strong> ${data.data.user.full_name || 'N/A'}</p>
+                        <div class="token-display">
+                            <strong>JWT Token:</strong><br>
+                            ${authToken.substring(0, 50)}...
+                        </div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    
+                    // Show test section
+                    document.getElementById('testSection').style.display = 'block';
+                } else {
+                    // Error from server
+                    responseDiv.className = 'response error';
+                    responseDiv.innerHTML = `
+                        <h3>❌ Login Failed</h3>
+                        <p><strong>Message:</strong> ${data.message || 'Unknown error'}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                // Network or other error
+                loading.classList.remove('active');
+                loginBtn.disabled = false;
+                responseDiv.className = 'response error';
+                responseDiv.innerHTML = `
+                    <h3>❌ Request Failed</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p>Make sure the server is running on http://localhost:3000</p>
+                `;
+            }
+        });
+
+        // Test Protected Route
+        async function testProtectedRoute() {
+            const protectedResponse = document.getElementById('protectedResponse');
+            
+            if (!authToken) {
+                protectedResponse.className = 'response error';
+                protectedResponse.innerHTML = `
+                    <h3>❌ No Token</h3>
+                    <p>Please login first to get a token</p>
+                `;
+                return;
+            }
+            
+            protectedResponse.className = 'response';
+            protectedResponse.innerHTML = `<p>⏳ Testing protected route...</p>`;
+            protectedResponse.style.display = 'block';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'success') {
+                    protectedResponse.className = 'response success';
+                    protectedResponse.innerHTML = `
+                        <h3>✅ Protected Route Success!</h3>
+                        <p><strong>User ID:</strong> ${data.data.id}</p>
+                        <p><strong>Username:</strong> ${data.data.username}</p>
+                        <p><strong>Email:</strong> ${data.data.email}</p>
+                        <p><strong>Created:</strong> ${new Date(data.data.created_at).toLocaleString()}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    protectedResponse.className = 'response error';
+                    protectedResponse.innerHTML = `
+                        <h3>❌ Protected Route Failed</h3>
+                        <p><strong>Message:</strong> ${data.message || 'Unknown error'}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                protectedResponse.className = 'response error';
+                protectedResponse.innerHTML = `
+                    <h3>❌ Request Failed</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

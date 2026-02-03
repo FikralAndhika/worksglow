@@ -10,8 +10,725 @@
     
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
+    
+    <style>
+        /* Admin Login Modal Styles */
+        .admin-login-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 999;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .admin-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .admin-login-btn i {
+            margin-right: 8px;
+        }
+
+        /* Edit Mode Badge */
+        .edit-mode-badge {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+            gap: 15px;
+            align-items: center;
+        }
+
+        .edit-mode-badge.active {
+            display: flex;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Universal Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .modal-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            font-family: inherit;
+            color: #333;
+            background-color: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 12px;
+            background: #f1f1f1;
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .error-message.active {
+            display: block;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+
+        /* Edit Buttons for Sections */
+        .edit-btn {
+            display: none;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: rgba(102, 126, 234, 1);
+            transform: scale(1.05);
+        }
+
+        .edit-btn i {
+            margin-right: 5px;
+        }
+
+        .edit-mode .edit-btn {
+            display: inline-block;
+        }
+
+        /* Make sections position relative for edit buttons */
+        .hero, .services, #gallery, #contact {
+            position: relative;
+        }
+
+        /* Service Card Edit Styles */
+        .service-cards-container {
+            margin-top: 20px;
+        }
+
+        .service-edit-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .service-edit-card h4 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .file-upload-area:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .file-upload-area i {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .file-upload-area p {
+            color: #666;
+            margin: 0;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
+    <!-- Admin Login Button -->
+    <button class="admin-login-btn" id="adminLoginBtn" onclick="openLoginModal()">
+        <i class="fas fa-lock"></i> Admin Login
+    </button>
+
+    <!-- Edit Mode Badge -->
+    <div class="edit-mode-badge" id="editModeBadge">
+        <span><i class="fas fa-edit"></i> Edit Mode ON</span>
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔐 Admin Login</h2>
+                <p>Works Glow Admin Panel</p>
+            </div>
+
+            <div class="error-message" id="loginError"></div>
+
+            <form id="adminLoginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="adminUsername">Username</label>
+                    <input type="text" id="adminUsername" name="username" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="adminPassword">Password</label>
+                    <input type="password" id="adminPassword" name="password" required autocomplete="current-password">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary" id="loginSubmitBtn">
+                        Login
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeLoginModal()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Hero Modal -->
+    <div class="modal" id="editHeroModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Edit Hero Section</h2>
+                <p>Update hero slider images and content</p>
+            </div>
+
+            <div class="error-message" id="heroError"></div>
+            <div class="success-message" id="heroSuccess"></div>
+
+            <form id="heroEditForm" onsubmit="handleHeroUpdate(event)">
+                <!-- SLIDE 1 -->
+                <div class="form-group">
+                    <label>Slide 1 - Background Image</label>
+                    <div class="file-upload-area" onclick="document.getElementById('hero1Image').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload slide 1 background image</p>
+                        <small id="hero1CurrentFile" style="color: #999; margin-top: 5px; display: block;">📁 Current: Untitled design/1.jpg</small>
+                    </div>
+                    <input type="file" id="hero1Image" accept="image/*" style="display: none;" onchange="previewHeroImage(this, 'hero1Preview', 0)">
+                    <img id="hero1Preview" class="preview-image" style="display: none;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hero1Subtitle">Slide 1 - Subtitle</label>
+                        <input type="text" id="hero1Subtitle" value="Make A Desire">
+                    </div>
+                    <div class="form-group">
+                        <label for="hero1Title">Slide 1 - Title</label>
+                        <input type="text" id="hero1Title" value="WORKS GLOW">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hero1Description">Slide 1 - Description</label>
+                    <textarea id="hero1Description">Bengkel Cat Profesional dengan Kualitas Premium</textarea>
+                </div>
+
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid #f0f0f0;">
+
+                <!-- SLIDE 2 -->
+                <div class="form-group">
+                    <label>Slide 2 - Background Image</label>
+                    <div class="file-upload-area" onclick="document.getElementById('hero2Image').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload slide 2 background image</p>
+                        <small id="hero2CurrentFile" style="color: #999; margin-top: 5px; display: block;">📁 Current: Untitled design/2.jpg</small>
+                    </div>
+                    <input type="file" id="hero2Image" accept="image/*" style="display: none;" onchange="previewHeroImage(this, 'hero2Preview', 1)">
+                    <img id="hero2Preview" class="preview-image" style="display: none;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hero2Subtitle">Slide 2 - Subtitle</label>
+                        <input type="text" id="hero2Subtitle" value="Professional Service">
+                    </div>
+                    <div class="form-group">
+                        <label for="hero2Title">Slide 2 - Title</label>
+                        <input type="text" id="hero2Title" value="PREMIUM QUALITY">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hero2Description">Slide 2 - Description</label>
+                    <textarea id="hero2Description">Hasil Cat Terbaik dengan Teknologi Modern</textarea>
+                </div>
+
+                <hr style="margin: 30px 0; border: none; border-top: 2px solid #f0f0f0;">
+
+                <!-- SLIDE 3 -->
+                <div class="form-group">
+                    <label>Slide 3 - Background Image</label>
+                    <div class="file-upload-area" onclick="document.getElementById('hero3Image').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload slide 3 background image</p>
+                        <small id="hero3CurrentFile" style="color: #999; margin-top: 5px; display: block;">📁 Current: Untitled design/3.jpg</small>
+                    </div>
+                    <input type="file" id="hero3Image" accept="image/*" style="display: none;" onchange="previewHeroImage(this, 'hero3Preview', 2)">
+                    <img id="hero3Preview" class="preview-image" style="display: none;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hero3Subtitle">Slide 3 - Subtitle</label>
+                        <input type="text" id="hero3Subtitle" value="Expert Team">
+                    </div>
+                    <div class="form-group">
+                        <label for="hero3Title">Slide 3 - Title</label>
+                        <input type="text" id="hero3Title" value="SATISFACTION">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hero3Description">Slide 3 - Description</label>
+                    <textarea id="hero3Description">Kepuasan Pelanggan adalah Prioritas Utama</textarea>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editHeroModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Services Modal -->
+    <div class="modal" id="editServicesModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛠️ Edit Services</h2>
+                <p>Update service information</p>
+            </div>
+
+            <div class="error-message" id="servicesError"></div>
+            <div class="success-message" id="servicesSuccess"></div>
+
+            <form id="servicesEditForm" onsubmit="handleServicesUpdate(event)">
+                <div class="service-cards-container">
+                    <!-- Service 1 -->
+                    <div class="service-edit-card">
+                        <h4><i class="fas fa-car"></i> Service 1</h4>
+                        <div class="form-group">
+                            <label>Icon</label>
+                            <select id="service1Icon">
+                                <option value="fa-car" selected>Car</option>
+                                <option value="fa-motorcycle">Motorcycle</option>
+                                <option value="fa-tools">Tools</option>
+                                <option value="fa-palette">Palette</option>
+                                <option value="fa-shield-alt">Shield</option>
+                                <option value="fa-certificate">Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="service1Title" value="Cat Mobil">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="service1Description">Layanan cat mobil profesional dengan hasil sempurna dan tahan lama. Menggunakan cat berkualitas premium dan teknologi terdepan.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Service 2 -->
+                    <div class="service-edit-card">
+                        <h4><i class="fas fa-motorcycle"></i> Service 2</h4>
+                        <div class="form-group">
+                            <label>Icon</label>
+                            <select id="service2Icon">
+                                <option value="fa-car">Car</option>
+                                <option value="fa-motorcycle" selected>Motorcycle</option>
+                                <option value="fa-tools">Tools</option>
+                                <option value="fa-palette">Palette</option>
+                                <option value="fa-shield-alt">Shield</option>
+                                <option value="fa-certificate">Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="service2Title" value="Cat Motor">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="service2Description">Spesialis cat motor dengan berbagai pilihan warna dan finishing. Hasil mengkilap dan detail yang presisi.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Service 3 -->
+                    <div class="service-edit-card">
+                        <h4><i class="fas fa-tools"></i> Service 3</h4>
+                        <div class="form-group">
+                            <label>Icon</label>
+                            <select id="service3Icon">
+                                <option value="fa-car">Car</option>
+                                <option value="fa-motorcycle">Motorcycle</option>
+                                <option value="fa-tools" selected>Tools</option>
+                                <option value="fa-palette">Palette</option>
+                                <option value="fa-shield-alt">Shield</option>
+                                <option value="fa-certificate">Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="service3Title" value="Body Repair">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="service3Description">Layanan perbaikan body kendaraan dengan teknik terbaik. Mengembalikan kondisi kendaraan seperti semula.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Service 4 -->
+                    <div class="service-edit-card">
+                        <h4><i class="fas fa-palette"></i> Service 4</h4>
+                        <div class="form-group">
+                            <label>Icon</label>
+                            <select id="service4Icon">
+                                <option value="fa-car">Car</option>
+                                <option value="fa-motorcycle">Motorcycle</option>
+                                <option value="fa-tools">Tools</option>
+                                <option value="fa-palette" selected>Palette</option>
+                                <option value="fa-shield-alt">Shield</option>
+                                <option value="fa-certificate">Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="service4Title" value="Custom Paint">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="service4Description">Desain cat custom sesuai keinginan Anda. Dari airbrush hingga grafis kompleks dengan hasil yang menakjubkan.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="service-edit-card">
+                        <h4><i class="fas fa-shield-alt"></i> Service 5</h4>
+                        <div class="form-group">
+                            <label>Icon</label>
+                            <select id="service5Icon">
+                                <option value="fa-car">Car</option>
+                                <option value="fa-motorcycle">Motorcycle</option>
+                                <option value="fa-tools">Tools</option>
+                                <option value="fa-palette">Palette</option>
+                                <option value="fa-shield-alt" selected>Shield</option>
+                                <option value="fa-certificate">Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="service5Title" value="Paint Protection">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="service5Description">Layanan perlindungan cat kendaraan dengan coating berkualitas tinggi untuk hasil yang tahan lama.</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Service 6 -->
+                    <div class="service-edit-card">
+                        <h4><i class="fas fa-certificate"></i> Service 6</h4>
+                        <div class="form-group">
+                            <label>Icon</label>
+                            <select id="service6Icon">
+                                <option value="fa-car">Car</option>
+                                <option value="fa-motorcycle">Motorcycle</option>
+                                <option value="fa-tools">Tools</option>
+                                <option value="fa-palette">Palette</option>
+                                <option value="fa-shield-alt">Shield</option>
+                                <option value="fa-certificate" selected>Certificate</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="service6Title" value="Warranty">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="service6Description">Garansi resmi untuk setiap pekerjaan kami. Kepuasan dan kualitas adalah prioritas utama.</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editServicesModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Contact Modal -->
+    <div class="modal" id="editContactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📞 Edit Contact Information</h2>
+                <p>Update contact details</p>
+            </div>
+
+            <div class="error-message" id="contactError"></div>
+            <div class="success-message" id="contactSuccess"></div>
+
+            <form id="contactEditForm" onsubmit="handleContactUpdate(event)">
+                <div class="form-group">
+                    <label for="contactAddress">Alamat</label>
+                    <textarea id="contactAddress" rows="3">Jl. Pasir Pogor Raya No.7 Blok DD No.6, Mekarjaya, Kec. Rancasari, Kota Bandung, Jawa Barat 40292</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactPhone">Nomor Telepon</label>
+                    <input type="tel" id="contactPhone" value="+62 856-0629-6686">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactEmail">Email</label>
+                    <input type="email" id="contactEmail" value="info@worksglow.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactHours">Jam Operasional</label>
+                    <input type="text" id="contactHours" value="Senin - Sabtu: 08:00 - 17:00">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactMapsLink">Google Maps Link</label>
+                    <input type="url" id="contactMapsLink" value="https://maps.app.goo.gl/SkXTYsDLL7NzeyRz5">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactWhatsApp">WhatsApp Number</label>
+                    <input type="text" id="contactWhatsApp" value="6285606296686">
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('editContactModal')">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Loading Screen -->
     <div class="loading" id="loading">
         <div class="spinner"></div>
@@ -33,6 +750,10 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <button class="edit-btn" onclick="openModal('editHeroModal')">
+            <i class="fas fa-edit"></i> Edit Hero
+        </button>
+        
         <div class="hero-slider">
             <!-- Slide 1 -->
             <div class="slide active">
@@ -84,6 +805,10 @@
 
     <!-- Services Section -->
     <section id="services" class="services">
+        <button class="edit-btn" onclick="openModal('editServicesModal')">
+            <i class="fas fa-edit"></i> Edit Services
+        </button>
+        
         <div class="container">
             <div class="section-title">
                 <h2>Layanan Kami</h2>
@@ -138,18 +863,20 @@
 
    <!-- Gallery Section -->
     <section id="gallery" class="gallery">
+        <button class="edit-btn" onclick="alert('Gallery management coming soon!')">
+            <i class="fas fa-edit"></i> Edit Gallery
+        </button>
+        
         <div class="container">
             <div class="section-title">
                 <h2>Galeri Karya</h2>
                 <p>Lihat hasil karya terbaik kami dengan kualitas premium</p>
             </div>
             <div class="gallery-grid">
-                <div class="gallery-item" onclick="goToGallery()"></div>
-                <div class="gallery-item" onclick="goToGallery()"></div>
-                <div class="gallery-item" onclick="goToGallery()"></div>
-                <div class="gallery-item" onclick="goToGallery()"></div>
-                <div class="gallery-item" onclick="goToGallery()"></div>
-                <div class="gallery-item" onclick="goToGallery()"></div>
+                <!-- ✅ Gallery items akan diisi oleh loadGalleryPreview() -->
+                <div class="gallery-item" onclick="goToGallery()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: rgba(255,255,255,0.5);"></i>
+                </div>
             </div>
             <div class="gallery-actions">
                 <button class="btn-detail" onclick="goToGallery()">
@@ -161,6 +888,10 @@
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
+        <button class="edit-btn" onclick="openModal('editContactModal')">
+            <i class="fas fa-edit"></i> Edit Contact
+        </button>
+        
         <div class="container">
             <div class="section-title">
                 <h2>Hubungi Kami</h2>
@@ -245,5 +976,651 @@
 
     <!-- External JavaScript -->
     <script src="script.js"></script>
+    
+    <!-- Admin & Edit JavaScript -->
+    <script>
+        // ============================================================
+        // Auth State
+        // ============================================================
+        let authToken = localStorage.getItem('adminToken');
+        let isEditMode = false;
+
+        // ============================================================
+        // ✅ BARU: Load Gallery Preview dari Database (6 project terbaru)
+        // ============================================================
+        async function loadGalleryPreview() {
+            try {
+                console.log('🔄 Loading gallery preview from database...');
+                const response = await fetch('http://localhost:3000/api/gallery');
+                const result = await response.json();
+
+                console.log('📥 Gallery data:', result);
+
+                if (result.status === 'success' && result.data) {
+                    const galleryGrid = document.querySelector('#gallery .gallery-grid');
+                    if (!galleryGrid) return;
+
+                    // Ambil 6 project terbaru untuk preview
+                    const projects = result.data.slice(0, 6);
+
+                    // Gradients untuk background
+                    const gradients = [
+                        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                        'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+                    ];
+
+                    // Render gallery items
+                    galleryGrid.innerHTML = projects.map((project, index) => {
+                        const primaryImage = project.images && project.images.length > 0
+                            ? (project.images.find(img => img.is_primary) || project.images[0])
+                            : null;
+                        
+                        const gradient = gradients[index % gradients.length];
+                        const bgStyle = primaryImage 
+                            ? `background-image: url('${primaryImage.image_url}'); background-size: cover; background-position: center;`
+                            : `background: ${gradient};`;
+
+                        return `
+                            <div class="gallery-item" onclick="goToGallery()" style="${bgStyle}">
+                                ${!primaryImage ? '<i class="fas fa-car" style="font-size: 4rem; color: rgba(255,255,255,0.3);"></i>' : ''}
+                            </div>
+                        `;
+                    }).join('');
+
+                    console.log('✅ Gallery preview loaded with', projects.length, 'projects');
+                } else {
+                    console.log('⚠️ No gallery data available');
+                }
+            } catch (error) {
+                console.error('❌ Failed to load gallery preview:', error);
+                // Tampilkan placeholder jika gagal load
+                const galleryGrid = document.querySelector('#gallery .gallery-grid');
+                if (galleryGrid) {
+                    const gradients = [
+                        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                        'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+                    ];
+                    galleryGrid.innerHTML = Array(6).fill(0).map((_, i) => `
+                        <div class="gallery-item" onclick="goToGallery()" style="background: ${gradients[i]};">
+                            <i class="fas fa-car" style="font-size: 4rem; color: rgba(255,255,255,0.3);"></i>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        // ============================================================
+        // ✅ Load Hero Data dari Database pas refresh
+        // ============================================================
+        async function loadHeroData() {
+            try {
+                console.log('🔄 Loading hero data from database...');
+                const response = await fetch('http://localhost:3000/api/hero');
+                const data = await response.json();
+
+                console.log('📥 Hero data:', data);
+
+                if (data.status === 'success' && data.data) {
+                    const slides = document.querySelectorAll('.slide');
+                    const heroSlides = [data.data.slide1, data.data.slide2, data.data.slide3];
+
+                    heroSlides.forEach((slideData, index) => {
+                        if (!slideData || !slides[index]) return;
+
+                        // Update background image
+                        if (slideData.image_url) {
+                            const slideBg = slides[index].querySelector('.slide-bg');
+                            if (slideBg) {
+                                slideBg.style.backgroundImage = `url('${slideData.image_url}')`;
+                                console.log(`✅ Slide ${index + 1} image updated: ${slideData.image_url}`);
+                            }
+                        }
+
+                        // Update subtitle, title, description
+                        const subtitle = slides[index].querySelector('.hero-subtitle');
+                        const title = slides[index].querySelector('.hero-title');
+                        const desc = slides[index].querySelector('.hero-description');
+
+                        if (subtitle && slideData.subtitle) subtitle.textContent = slideData.subtitle;
+                        if (title && slideData.title) title.textContent = slideData.title;
+                        if (desc && slideData.description) desc.textContent = slideData.description;
+                    });
+
+                    populateHeroForm(data.data);
+                    console.log('✅ Hero data loaded from database');
+                }
+            } catch (error) {
+                console.error('❌ Failed to load hero data:', error);
+            }
+        }
+
+        function populateHeroForm(heroData) {
+            const slides = [heroData.slide1, heroData.slide2, heroData.slide3];
+
+            slides.forEach((slide, index) => {
+                if (!slide) return;
+                const num = index + 1;
+
+                const subtitleInput = document.getElementById(`hero${num}Subtitle`);
+                const titleInput = document.getElementById(`hero${num}Title`);
+                const descInput = document.getElementById(`hero${num}Description`);
+                const currentFileLabel = document.getElementById(`hero${num}CurrentFile`);
+
+                if (subtitleInput && slide.subtitle) subtitleInput.value = slide.subtitle;
+                if (titleInput && slide.title) titleInput.value = slide.title;
+                if (descInput && slide.description) descInput.value = slide.description;
+                if (currentFileLabel && slide.image_url) {
+                    currentFileLabel.textContent = `📁 Current: ${slide.image_url}`;
+                }
+            });
+        }
+
+        // ============================================================
+        // Load Services Data from Database
+        // ============================================================
+        async function loadServicesData() {
+            try {
+                console.log('🔄 Loading services from database...');
+                const response = await fetch('http://localhost:3000/api/services');
+                const data = await response.json();
+                
+                console.log('📥 Services data:', data);
+                
+                if (data.status === 'success' && data.data) {
+                    updateServicesDisplay(data.data);
+                    populateServicesForm(data.data);
+                }
+            } catch (error) {
+                console.error('❌ Failed to load services:', error);
+            }
+        }
+
+        function populateServicesForm(services) {
+            services.forEach((service, index) => {
+                const serviceNum = index + 1;
+                
+                const iconSelect = document.getElementById(`service${serviceNum}Icon`);
+                if (iconSelect && service.icon) iconSelect.value = service.icon;
+                
+                const titleInput = document.getElementById(`service${serviceNum}Title`);
+                if (titleInput && service.title) titleInput.value = service.title;
+                
+                const descInput = document.getElementById(`service${serviceNum}Description`);
+                if (descInput && service.description) descInput.value = service.description;
+            });
+            console.log('✅ Services form populated');
+        }
+
+        function updateServicesDisplay(services) {
+            const serviceCards = document.querySelectorAll('.service-card');
+            services.forEach((service, index) => {
+                if (serviceCards[index]) {
+                    const iconElement = serviceCards[index].querySelector('.service-icon i');
+                    const titleElement = serviceCards[index].querySelector('h3');
+                    const descElement = serviceCards[index].querySelector('p');
+                    
+                    if (iconElement && service.icon) iconElement.className = `fas ${service.icon}`;
+                    if (titleElement && service.title) titleElement.textContent = service.title;
+                    if (descElement && service.description) descElement.textContent = service.description;
+                }
+            });
+            console.log('✅ Services display updated');
+        }
+
+        // ============================================================
+        // ✅ Load Contact Data dari Database pas refresh
+        // ============================================================
+        async function loadContactData() {
+            try {
+                console.log('🔄 Loading contact data from database...');
+                const response = await fetch('http://localhost:3000/api/contact');
+                const data = await response.json();
+
+                console.log('📥 Contact data:', data);
+
+                if (data.status === 'success' && data.data) {
+                    updateContactDisplay(data.data);
+                    populateContactForm(data.data);
+                    console.log('✅ Contact data loaded from database');
+                }
+            } catch (error) {
+                console.error('❌ Failed to load contact data:', error);
+            }
+        }
+
+        function populateContactForm(contactData) {
+            const addrInput = document.getElementById('contactAddress');
+            const phoneInput = document.getElementById('contactPhone');
+            const emailInput = document.getElementById('contactEmail');
+            const hoursInput = document.getElementById('contactHours');
+            const mapsInput = document.getElementById('contactMapsLink');
+            const waInput = document.getElementById('contactWhatsApp');
+
+            if (addrInput && contactData.address) addrInput.value = contactData.address;
+            if (phoneInput && contactData.phone) phoneInput.value = contactData.phone;
+            if (emailInput && contactData.email) emailInput.value = contactData.email;
+            if (hoursInput && contactData.hours) hoursInput.value = contactData.hours;
+            if (mapsInput && contactData.mapsLink) mapsInput.value = contactData.mapsLink;
+            if (waInput && contactData.whatsapp) waInput.value = contactData.whatsapp;
+        }
+
+        // ============================================================
+        // DOMContentLoaded — Load semua data dari database
+        // ============================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Page loaded');
+
+            // ✅ Load semua data dari database saat halaman dibuka
+            loadHeroData();        // Hero slides + foto
+            loadServicesData();    // Services
+            loadContactData();     // Contact info
+            loadGalleryPreview();  // ✅ BARU: Gallery preview
+
+            if (authToken) {
+                verifyToken();
+            }
+        });
+
+        // ============================================================
+        // Modal Management
+        // ============================================================
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            if (modalId === 'editServicesModal') loadServicesData();
+            if (modalId === 'editHeroModal') loadHeroData();
+            if (modalId === 'editContactModal') loadContactData();
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            const errorDiv = document.querySelector(`#${modalId} .error-message`);
+            const successDiv = document.querySelector(`#${modalId} .success-message`);
+            if (errorDiv) errorDiv.classList.remove('active');
+            if (successDiv) successDiv.classList.remove('active');
+        }
+
+        function openLoginModal() {
+            openModal('loginModal');
+            document.getElementById('adminUsername').focus();
+        }
+
+        function closeLoginModal() {
+            closeModal('loginModal');
+            document.getElementById('adminLoginForm').reset();
+        }
+
+        // ============================================================
+        // Handle Login
+        // ============================================================
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const errorDiv = document.getElementById('loginError');
+            
+            errorDiv.classList.remove('active');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Logging in...';
+            
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
+                
+                if (response.ok && data.status === 'success') {
+                    authToken = data.data.token;
+                    localStorage.setItem('adminToken', authToken);
+                    localStorage.setItem('adminUser', JSON.stringify(data.data.user));
+                    
+                    closeLoginModal();
+                    enableEditMode();
+                    
+                    alert('✅ Login berhasil! Edit Mode ON');
+                } else {
+                    errorDiv.textContent = data.message || 'Login gagal. Silakan cek username dan password.';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
+                errorDiv.textContent = 'Gagal terhubung ke server. Pastikan server sedang berjalan.';
+                errorDiv.classList.add('active');
+            }
+        }
+
+        async function verifyToken() {
+            try {
+                const response = await fetch('http://localhost:3000/api/auth/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    enableEditMode();
+                } else {
+                    logout();
+                }
+            } catch (error) {
+                console.error('Token verification failed:', error);
+            }
+        }
+
+        function enableEditMode() {
+            isEditMode = true;
+            document.body.classList.add('edit-mode');
+            document.getElementById('adminLoginBtn').style.display = 'none';
+            document.getElementById('editModeBadge').classList.add('active');
+            
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userRole', 'admin');
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout dari Edit Mode?')) {
+                authToken = null;
+                isEditMode = false;
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminUser');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userRole');
+                
+                document.body.classList.remove('edit-mode');
+                document.getElementById('adminLoginBtn').style.display = 'block';
+                document.getElementById('editModeBadge').classList.remove('active');
+                
+                alert('✅ Logout berhasil!');
+            }
+        }
+
+        // ============================================================
+        // Hero Image Preview & Update
+        // ============================================================
+        function previewHeroImage(input, previewId, slideIndex) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    
+                    const slides = document.querySelectorAll('.slide');
+                    if (slides[slideIndex]) {
+                        const slideBg = slides[slideIndex].querySelector('.slide-bg');
+                        if (slideBg) {
+                            slideBg.style.backgroundImage = `url('${e.target.result}')`;
+                        }
+                    }
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        async function handleHeroUpdate(event) {
+            event.preventDefault();
+            
+            const submitBtn = event.target.querySelector('.btn-primary');
+            const errorDiv = document.getElementById('heroError');
+            const successDiv = document.getElementById('heroSuccess');
+            
+            errorDiv.classList.remove('active');
+            successDiv.classList.remove('active');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            try {
+                const formData = new FormData();
+                
+                // Slide 1
+                if (document.getElementById('hero1Image').files[0]) {
+                    formData.append('hero1Image', document.getElementById('hero1Image').files[0]);
+                }
+                formData.append('hero1Subtitle', document.getElementById('hero1Subtitle').value);
+                formData.append('hero1Title', document.getElementById('hero1Title').value);
+                formData.append('hero1Description', document.getElementById('hero1Description').value);
+                
+                // Slide 2
+                if (document.getElementById('hero2Image').files[0]) {
+                    formData.append('hero2Image', document.getElementById('hero2Image').files[0]);
+                }
+                formData.append('hero2Subtitle', document.getElementById('hero2Subtitle').value);
+                formData.append('hero2Title', document.getElementById('hero2Title').value);
+                formData.append('hero2Description', document.getElementById('hero2Description').value);
+                
+                // Slide 3
+                if (document.getElementById('hero3Image').files[0]) {
+                    formData.append('hero3Image', document.getElementById('hero3Image').files[0]);
+                }
+                formData.append('hero3Subtitle', document.getElementById('hero3Subtitle').value);
+                formData.append('hero3Title', document.getElementById('hero3Title').value);
+                formData.append('hero3Description', document.getElementById('hero3Description').value);
+                
+                const response = await fetch('http://localhost:3000/api/hero/update', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                
+                if (response.ok && data.status === 'success') {
+                    successDiv.textContent = '✅ Hero section updated successfully!';
+                    successDiv.classList.add('active');
+
+                    await loadHeroData();
+                    
+                    setTimeout(() => {
+                        closeModal('editHeroModal');
+                        successDiv.classList.remove('active');
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.message || 'Failed to update hero section';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                errorDiv.textContent = 'Failed to connect to server';
+                errorDiv.classList.add('active');
+            }
+        }
+
+        // ============================================================
+        // Handle Services Update
+        // ============================================================
+        async function handleServicesUpdate(event) {
+            event.preventDefault();
+            
+            const submitBtn = event.target.querySelector('.btn-primary');
+            const errorDiv = document.getElementById('servicesError');
+            const successDiv = document.getElementById('servicesSuccess');
+            
+            errorDiv.classList.remove('active');
+            successDiv.classList.remove('active');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            try {
+                const services = [];
+                for (let i = 1; i <= 6; i++) {
+                    services.push({
+                        icon: document.getElementById(`service${i}Icon`).value,
+                        title: document.getElementById(`service${i}Title`).value,
+                        description: document.getElementById(`service${i}Description`).value
+                    });
+                }
+                
+                const response = await fetch('http://localhost:3000/api/services/update', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ services })
+                });
+                
+                const data = await response.json();
+                
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                
+                if (response.ok && data.status === 'success') {
+                    successDiv.textContent = '✅ Services updated successfully!';
+                    successDiv.classList.add('active');
+                    
+                    updateServicesDisplay(data.data);
+                    
+                    setTimeout(() => {
+                        closeModal('editServicesModal');
+                        successDiv.classList.remove('active');
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.message || 'Failed to update services';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                errorDiv.textContent = 'Failed to connect to server: ' + error.message;
+                errorDiv.classList.add('active');
+            }
+        }
+
+        // ============================================================
+        // Handle Contact Update
+        // ============================================================
+        async function handleContactUpdate(event) {
+            event.preventDefault();
+            
+            const submitBtn = event.target.querySelector('.btn-primary');
+            const errorDiv = document.getElementById('contactError');
+            const successDiv = document.getElementById('contactSuccess');
+            
+            errorDiv.classList.remove('active');
+            successDiv.classList.remove('active');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            try {
+                const contactData = {
+                    address: document.getElementById('contactAddress').value,
+                    phone: document.getElementById('contactPhone').value,
+                    email: document.getElementById('contactEmail').value,
+                    hours: document.getElementById('contactHours').value,
+                    mapsLink: document.getElementById('contactMapsLink').value,
+                    whatsapp: document.getElementById('contactWhatsApp').value
+                };
+                
+                const response = await fetch('http://localhost:3000/api/contact/update', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(contactData)
+                });
+                
+                const data = await response.json();
+                
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                
+                if (response.ok && data.status === 'success') {
+                    successDiv.textContent = '✅ Contact information updated successfully!';
+                    successDiv.classList.add('active');
+                    
+                    updateContactDisplay(contactData);
+                    
+                    setTimeout(() => {
+                        closeModal('editContactModal');
+                    }, 2000);
+                } else {
+                    errorDiv.textContent = data.message || 'Failed to update contact information';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+                errorDiv.textContent = 'Failed to connect to server';
+                errorDiv.classList.add('active');
+            }
+        }
+
+        function updateContactDisplay(contactData) {
+            const contactItems = document.querySelectorAll('.contact-item');
+            
+            if (contactItems[0]) {
+                const addrLink = contactItems[0].querySelector('a');
+                if (addrLink) {
+                    addrLink.textContent = contactData.address;
+                    addrLink.href = contactData.mapsLink || contactData.maps_link || '#';
+                }
+            }
+
+            if (contactItems[1]) {
+                const phoneLink = contactItems[1].querySelector('a');
+                if (phoneLink) {
+                    phoneLink.textContent = contactData.phone;
+                    phoneLink.href = `https://wa.me/${contactData.whatsapp}`;
+                }
+            }
+
+            if (contactItems[2]) {
+                contactItems[2].querySelector('div').innerHTML = `<strong>Email</strong><br>${contactData.email}`;
+            }
+
+            if (contactItems[3]) {
+                contactItems[3].querySelector('div').innerHTML = `<strong>Jam Buka</strong><br>${contactData.hours}`;
+            }
+        }
+
+        // ============================================================
+        // Close modal handlers
+        // ============================================================
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

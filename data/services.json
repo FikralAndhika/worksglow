@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "icon": "fa-car",
+    "title": "Cat Mobil aja",
+    "description": "Layanan cat mobil profesional dengan hasil sempurna dan tahan lama. Menggunakan cat berkualitas premium dan teknologi terdepan.",
+    "is_active": true,
+    "created_at": "2026-02-02T06:53:35.383Z",
+    "updated_at": "2026-02-02T06:54:06.146Z"
+  },
+  {
+    "id": 2,
+    "icon": "fa-motorcycle",
+    "title": "Cat Motor",
+    "description": "Spesialis cat motor dengan berbagai pilihan warna dan finishing. Hasil mengkilap dan detail yang presisi.",
+    "is_active": true,
+    "created_at": "2026-02-02T06:53:35.384Z",
+    "updated_at": "2026-02-02T06:54:06.146Z"
+  },
+  {
+    "id": 3,
+    "icon": "fa-tools",
+    "title": "Body Repair",
+    "description": "Layanan perbaikan body kendaraan dengan teknik terbaik. Mengembalikan kondisi kendaraan seperti semula.",
+    "is_active": true,
+    "created_at": "2026-02-02T06:53:35.384Z",
+    "updated_at": "2026-02-02T06:54:06.146Z"
+  },
+  {
+    "id": 4,
+    "icon": "fa-palette",
+    "title": "Custom Paint",
+    "description": "Desain cat custom sesuai keinginan Anda. Dari airbrush hingga grafis kompleks dengan hasil yang menakjubkan.",
+    "is_active": true,
+    "created_at": "2026-02-02T06:53:35.384Z",
+    "updated_at": "2026-02-02T06:54:06.146Z"
+  },
+  {
+    "id": 5,
+    "icon": "fa-shield-alt",
+    "title": "Paint Protection",
+    "description": "Layanan perlindungan cat kendaraan dengan coating berkualitas tinggi untuk hasil yang tahan lama.",
+    "is_active": true,
+    "created_at": "2026-02-02T06:53:35.384Z",
+    "updated_at": "2026-02-02T06:54:06.146Z"
+  },
+  {
+    "id": 6,
+    "icon": "fa-certificate",
+    "title": "Warranty",
+    "description": "Garansi resmi untuk setiap pekerjaan kami. Kepuasan dan kualitas adalah prioritas utama.",
+    "is_active": true,
+    "created_at": "2026-02-02T06:53:35.384Z",
+    "updated_at": "2026-02-02T06:54:06.146Z"
+  }
+]

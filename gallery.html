@@ -135,12 +135,19 @@
             overflow: hidden;
         }
 
+        .gallery-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .gallery-item-image::before {
             content: '\f1b9';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             font-size: 4rem;
             opacity: 0.3;
+            position: absolute;
         }
 
         .gallery-item-content {
@@ -165,6 +172,12 @@
             gap: 0.5rem;
             color: #666;
             font-size: 0.85rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
         }
 
         /* Lightbox Modal */
@@ -441,6 +454,462 @@
             transform: scale(1.2);
         }
 
+        /* ✅ ADMIN STYLES */
+        .gallery-item.edit-mode {
+            position: relative;
+        }
+
+        .gallery-item .admin-actions {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px;
+            gap: 10px;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .gallery-item.edit-mode .admin-actions {
+            display: flex;
+        }
+
+        .btn-edit, .btn-delete {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #45a049;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #da190b;
+        }
+
+        /* ============================================
+           PROJECT MODAL (Tambah & Edit)
+           ============================================ */
+        .project-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 8888;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .project-modal-overlay.active {
+            display: flex;
+        }
+
+        .project-modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 680px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+            animation: modalSlideUp 0.3s cubic-bezier(.22,.68,0,1.2);
+        }
+
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .project-modal::-webkit-scrollbar { width: 6px; }
+        .project-modal::-webkit-scrollbar-track { background: transparent; }
+        .project-modal::-webkit-scrollbar-thumb { background: #ddd; border-radius: 3px; }
+
+        /* Header */
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.75rem 2rem 1rem;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 2;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .modal-header h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #111;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .modal-header h2 i {
+            font-size: 1.1rem;
+            color: #667eea;
+        }
+
+        .modal-close-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .modal-close-btn:hover {
+            background: #f44336;
+            color: #fff;
+        }
+
+        /* Body */
+        .modal-body {
+            padding: 1.75rem 2rem 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .form-group label .req {
+            color: #f44336;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0.7rem 0.9rem;
+            font-size: 0.92rem;
+            color: #333;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+            background: #fff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Image upload zone */
+        .upload-zone {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 1.4rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.25s, background 0.25s;
+            background: #fafafa;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: #667eea;
+            background: rgba(102,126,234,0.06);
+        }
+
+        .upload-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-zone-icon {
+            font-size: 1.8rem;
+            color: #aaa;
+            margin-bottom: 0.4rem;
+        }
+
+        .upload-zone p {
+            font-size: 0.85rem;
+            color: #888;
+            margin: 0;
+        }
+
+        .upload-zone p span {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .upload-zone .file-limit {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-top: 0.25rem;
+        }
+
+        /* Preview grid (new images to upload) */
+        .preview-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 0.85rem;
+        }
+
+        .preview-thumb {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .preview-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-thumb .remove-preview {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            background: rgba(244,67,54,0.88);
+            border: none;
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .preview-thumb .remove-preview:hover {
+            background: #d32f2f;
+        }
+
+        /* Existing images (edit modal) */
+        .existing-images-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .existing-images-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .existing-thumb {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+            transition: border-color 0.2s;
+        }
+
+        .existing-thumb.marked-delete {
+            border-color: #f44336;
+            opacity: 0.5;
+        }
+
+        .existing-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .existing-thumb .delete-existing {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            background: rgba(244,67,54,0.85);
+            border: none;
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .existing-thumb .delete-existing:hover {
+            background: #d32f2f;
+        }
+
+        .existing-thumb .primary-badge {
+            position: absolute;
+            bottom: 3px;
+            left: 3px;
+            background: rgba(102,126,234,0.9);
+            color: #fff;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        /* Footer actions */
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            margin-top: 0.5rem;
+        }
+
+        .btn-cancel {
+            padding: 0.6rem 1.4rem;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            background: #fff;
+            color: #555;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-submit {
+            padding: 0.6rem 1.6rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-submit .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.5s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: #222;
+            color: #fff;
+            padding: 0.85rem 1.6rem;
+            border-radius: 10px;
+            font-size: 0.92rem;
+            z-index: 99999;
+            transition: transform 0.35s cubic-bezier(.22,.68,0,1.2);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { background: #2e7d32; }
+        .toast.error   { background: #c62828; }
+
+        .toast i {
+            font-size: 1.1rem;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .lightbox-left {
@@ -507,6 +976,14 @@
             .lightbox-title {
                 font-size: 1.5rem;
             }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .project-modal {
+                max-height: 95vh;
+            }
         }
     </style>
 </head>
@@ -516,11 +993,11 @@
         <div class="nav-container">
             <a href="#" class="logo">Works Glow</a>
             <ul class="nav-menu">
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#services">Layanan</a></li>
-                <li><a href="#gallery">Galeri</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#contact">Kontak</a></li>
+               <li><a href="index.html">Beranda</a></li>
+                <li><a href="index.html#services">Layanan</a></li>
+                <li><a href="galeri.html" class="active">Galeri</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="index.html#contact">Kontak</a></li>
             </ul>
         </div>
     </nav>
@@ -532,89 +1009,10 @@
                 <h2>Galeri Karya</h2>
                 <p>Lihat hasil karya terbaik kami dengan kualitas premium</p>
             </div>
-            <div class="gallery-grid">
-                <!-- Gallery Item 1 -->
-                <div class="gallery-item" onclick="openLightbox(0)">
-                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h3>Toyota Avanza Veloz</h3>
-                        <p>Full Body Repaint - Metallic Silver</p>
-                        <span class="photo-count">
-                            <i class="fas fa-images"></i>
-                            <span>5 Foto</span>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 2 -->
-                <div class="gallery-item" onclick="openLightbox(1)">
-                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h3>Honda Jazz RS</h3>
-                        <p>Custom Paint - Candy Red</p>
-                        <span class="photo-count">
-                            <i class="fas fa-images"></i>
-                            <span>4 Foto</span>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 3 -->
-                <div class="gallery-item" onclick="openLightbox(2)">
-                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h3>Mitsubishi Xpander</h3>
-                        <p>Premium Coating & Polish</p>
-                        <span class="photo-count">
-                            <i class="fas fa-images"></i>
-                            <span>6 Foto</span>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 4 -->
-                <div class="gallery-item" onclick="openLightbox(3)">
-                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h3>Daihatsu Terios</h3>
-                        <p>Dent Repair & Repaint</p>
-                        <span class="photo-count">
-                            <i class="fas fa-images"></i>
-                            <span>5 Foto</span>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 5 -->
-                <div class="gallery-item" onclick="openLightbox(4)">
-                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h3>Suzuki Ertiga</h3>
-                        <p>Scratch Removal & Full Polish</p>
-                        <span class="photo-count">
-                            <i class="fas fa-images"></i>
-                            <span>4 Foto</span>
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Gallery Item 6 -->
-                <div class="gallery-item" onclick="openLightbox(5)">
-                    <div class="gallery-item-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
-                    </div>
-                    <div class="gallery-item-content">
-                        <h3>BMW 3 Series</h3>
-                        <p>Luxury Detailing & Ceramic Coating</p>
-                        <span class="photo-count">
-                            <i class="fas fa-images"></i>
-                            <span>7 Foto</span>
-                        </span>
-                    </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <p>Memuat galeri...</p>
                 </div>
             </div>
         </div>
@@ -655,6 +1053,10 @@
                             <span id="lightboxDate">Januari 2025</span>
                         </div>
                         <div class="info-item">
+                            <i class="fas fa-car"></i>
+                            <span id="lightboxVehicle">-</span>
+                        </div>
+                        <div class="info-item">
                             <i class="fas fa-paint-brush"></i>
                             <span id="lightboxService">Full Body Repaint</span>
                         </div>
@@ -667,6 +1069,97 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- ✅ PROJECT MODAL (Tambah / Edit) -->
+    <div class="project-modal-overlay" id="projectModalOverlay" onclick="handleModalOverlayClick(event)">
+        <div class="project-modal">
+            <!-- Header -->
+            <div class="modal-header">
+                <h2><i class="fas fa-layer-group"></i> <span id="modalTitle">Tambah Project</span></h2>
+                <button class="modal-close-btn" onclick="closeProjectModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <!-- Existing images (only shown on edit) -->
+                <div id="existingImagesSection" style="display:none; margin-bottom: 1.1rem;">
+                    <div class="existing-images-label">Foto Sekarang <span style="color:#999;font-weight:400;text-transform:none;letter-spacing:0;">(klik <i class="fas fa-times" style="font-size:0.65rem;"></i> untuk hapus)</span></div>
+                    <div class="existing-images-grid" id="existingImagesGrid"></div>
+                </div>
+
+                <div class="form-row">
+                    <!-- Title -->
+                    <div class="form-group">
+                        <label>Nama Kendaraan <span class="req">*</span></label>
+                        <input type="text" id="fieldTitle" placeholder="contoh: Toyota Avanza Veloz">
+                    </div>
+                    <!-- Subtitle -->
+                    <div class="form-group">
+                        <label>Subtitle</label>
+                        <input type="text" id="fieldSubtitle" placeholder="contoh: Full Body Repaint">
+                    </div>
+                    <!-- Vehicle type -->
+                    <div class="form-group">
+                        <label>Jenis Kendaraan</label>
+                        <input type="text" id="fieldVehicleType" placeholder="contoh: Mobil">
+                    </div>
+                    <!-- Service type -->
+                    <div class="form-group">
+                        <label>Jenis Layanan</label>
+                        <input type="text" id="fieldServiceType" placeholder="contoh: Full Body Repaint">
+                    </div>
+                    <!-- Duration -->
+                    <div class="form-group">
+                        <label>Durasi Pengerjaan</label>
+                        <input type="text" id="fieldDuration" placeholder="contoh: 5 Hari Pengerjaan">
+                    </div>
+                    <!-- Completed date -->
+                    <div class="form-group">
+                        <label>Tanggal Selesai</label>
+                        <input type="text" id="fieldCompletedDate" placeholder="contoh: Januari 2025">
+                    </div>
+                    <!-- Display order -->
+                    <div class="form-group">
+                        <label>Urutan Tampil</label>
+                        <input type="number" id="fieldDisplayOrder" placeholder="0" min="0">
+                    </div>
+                    <!-- Description (full width) -->
+                    <div class="form-group full">
+                        <label>Deskripsi</label>
+                        <textarea id="fieldDescription" placeholder="Tuliskan detail pekerjaan yang dilakukan..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Upload zone -->
+                <div class="form-group">
+                    <label>Upload Foto <span id="uploadLabel" style="color:#999;font-weight:400;text-transform:none;letter-spacing:0;">(wajib untuk project baru)</span></label>
+                    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                        <input type="file" id="fileInput" multiple accept="image/jpeg,image/jpg,image/png,image/webp" onchange="handleFileSelect(event)">
+                        <div class="upload-zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <p>Drag & drop foto di sini atau <span>pilih dari perangkat</span></p>
+                        <p class="file-limit">Max 10 foto · JPEG, PNG, WebP · Maks 10MB per foto</p>
+                    </div>
+                    <div class="preview-grid" id="previewGrid"></div>
+                </div>
+
+                <!-- Footer actions -->
+                <div class="modal-footer">
+                    <button class="btn-cancel" onclick="closeProjectModal()">Batalkan</button>
+                    <button class="btn-submit" id="btnSubmit" onclick="submitProject()">
+                        <i class="fas fa-plus"></i> <span id="submitLabel">Tambah Project</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Berhasil!</span>
     </div>
 
     <!-- Footer -->
@@ -684,195 +1177,675 @@
     </footer>
 
     <script>
-        // Data galeri dengan multiple images per project
-        const galleryData = [
-            {
-                title: "Toyota Avanza Veloz",
-                subtitle: "Full Body Repaint",
-                description: "Pengecatan ulang full body dengan warna Metallic Silver. Proses pengerjaan meliputi stripping cat lama, repair body, primer, base coat, dan clear coat dengan hasil glossy sempurna. Menggunakan cat premium berkualitas tinggi untuk hasil yang tahan lama.",
-                date: "Januari 2025",
-                service: "Full Body Repaint",
-                duration: "5 Hari Pengerjaan",
-                images: [
-                    "Untitled design/1.jpg",
-                    "Untitled design/2.jpg",
-                    "Untitled design/3.jpg",
-                    "Untitled design/4.jpg",
-                    "Untitled design/5.jpg"
-                ]
-            },
-            {
-                title: "Honda Jazz RS",
-                subtitle: "Custom Paint",
-                description: "Custom paint dengan finishing Candy Red yang menawan. Detail pengerjaan mencakup body preparation, custom mixing warna sesuai request, aplikasi candy paint layer by layer untuk hasil depth yang maksimal, dan finishing dengan ceramic coating.",
-                date: "Desember 2024",
-                service: "Custom Paint Job",
-                duration: "7 Hari Pengerjaan",
-                images: [
-                    "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Jazz+1",
-                    "https://via.placeholder.com/1200x800/f5576c/ffffff?text=Jazz+2",
-                    "https://via.placeholder.com/1200x800/f093fb/ffffff?text=Jazz+3",
-                    "https://via.placeholder.com/1200x800/f5576c/ffffff?text=Jazz+4"
-                ]
-            },
-            {
-                title: "Mitsubishi Xpander",
-                subtitle: "Premium Coating & Polish",
-                description: "Treatment lengkap premium coating dan polish. Dimulai dengan wash & clay bar, machine polish untuk menghilangkan swirl marks, paint correction, dan diakhiri dengan aplikasi ceramic coating 9H untuk proteksi maksimal dan kilau yang tahan lama hingga 2 tahun.",
-                date: "Januari 2025",
-                service: "Ceramic Coating + Polish",
-                duration: "3 Hari Pengerjaan",
-                images: [
-                    "https://via.placeholder.com/1200x800/4facfe/ffffff?text=Xpander+1",
-                    "https://via.placeholder.com/1200x800/00f2fe/ffffff?text=Xpander+2",
-                    "https://via.placeholder.com/1200x800/4facfe/ffffff?text=Xpander+3",
-                    "https://via.placeholder.com/1200x800/00f2fe/ffffff?text=Xpander+4",
-                    "https://via.placeholder.com/1200x800/4facfe/ffffff?text=Xpander+5",
-                    "https://via.placeholder.com/1200x800/00f2fe/ffffff?text=Xpander+6"
-                ]
-            },
-            {
-                title: "Daihatsu Terios",
-                subtitle: "Dent Repair & Repaint",
-                description: "Perbaikan body dari kerusakan akibat benturan. Proses meliputi dent repair dengan teknik PDR untuk hasil sempurna, welding jika diperlukan, body filler, sanding, primer, dan pengecatan ulang area yang diperbaiki dengan color matching sempurna terhadap warna original.",
-                date: "Desember 2024",
-                service: "Body Repair + Repaint",
-                duration: "6 Hari Pengerjaan",
-                images: [
-                    "https://via.placeholder.com/1200x800/43e97b/ffffff?text=Terios+1",
-                    "https://via.placeholder.com/1200x800/38f9d7/ffffff?text=Terios+2",
-                    "https://via.placeholder.com/1200x800/43e97b/ffffff?text=Terios+3",
-                    "https://via.placeholder.com/1200x800/38f9d7/ffffff?text=Terios+4",
-                    "https://via.placeholder.com/1200x800/43e97b/ffffff?text=Terios+5"
-                ]
-            },
-            {
-                title: "Suzuki Ertiga",
-                subtitle: "Scratch Removal & Polish",
-                description: "Treatment khusus untuk menghilangkan goresan dan scratches pada body mobil. Menggunakan teknik multi-stage polishing dengan compound dan polish pad profesional, diikuti dengan glazing untuk hasil yang lebih halus dan mengkilap seperti baru keluar dari showroom.",
-                date: "November 2024",
-                service: "Paint Correction",
-                duration: "2 Hari Pengerjaan",
-                images: [
-                    "https://via.placeholder.com/1200x800/fa709a/ffffff?text=Ertiga+1",
-                    "https://via.placeholder.com/1200x800/fee140/ffffff?text=Ertiga+2",
-                    "https://via.placeholder.com/1200x800/fa709a/ffffff?text=Ertiga+3",
-                    "https://via.placeholder.com/1200x800/fee140/ffffff?text=Ertiga+4"
-                ]
-            },
-            {
-                title: "BMW 3 Series",
-                subtitle: "Luxury Detailing Package",
-                description: "Paket detailing premium untuk mobil mewah. Mencakup full exterior detailing dengan clay bar treatment, multi-stage paint correction untuk menghilangkan imperfections, aplikasi ceramic coating grade premium, interior deep cleaning, leather treatment, dan engine bay detailing untuk tampilan sempurna menyeluruh.",
-                date: "Januari 2025",
-                service: "Luxury Full Detailing",
-                duration: "10 Hari Pengerjaan",
-                images: [
-                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+1",
-                    "https://via.placeholder.com/1200x800/330867/ffffff?text=BMW+2",
-                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+3",
-                    "https://via.placeholder.com/1200x800/330867/ffffff?text=BMW+4",
-                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+5",
-                    "https://via.placeholder.com/1200x800/330867/ffffff?text=BMW+6",
-                    "https://via.placeholder.com/1200x800/30cfd0/ffffff?text=BMW+7"
-                ]
-            }
-        ];
-
+        // ============================================================
+        // STATE
+        // ============================================================
+        let galleryData   = [];
         let currentGallery = 0;
-        let currentSlide = 0;
+        let currentSlide  = 0;
 
+        // Admin
+        let authToken  = localStorage.getItem('adminToken');
+        let isEditMode = false;
+
+        // Modal state
+        let modalMode        = 'create';   // 'create' | 'edit'
+        let editingProjectId = null;
+        let newFiles         = [];          // File objects staged for upload
+        let deletedImageIds  = [];          // IDs of existing images to remove on update
+
+        // ============================================================
+        // GALLERY LOAD & RENDER
+        // ============================================================
+        async function loadGallery() {
+            try {
+                const response = await fetch('/api/gallery');
+                const result   = await response.json();
+                if (result.status === 'success') {
+                    galleryData = result.data;
+                    renderGallery();
+                } else {
+                    showError('Gagal memuat galeri');
+                }
+            } catch (error) {
+                console.error('Error loading gallery:', error);
+                showError('Gagal memuat galeri. Silakan coba lagi.');
+            }
+        }
+
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            if (galleryData.length === 0) {
+                grid.innerHTML = '<div class="loading">Belum ada project di galeri</div>';
+                return;
+            }
+
+            const gradients = [
+                'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                'linear-gradient(135deg, #30cfd0 0%, #330867 100%)'
+            ];
+
+            grid.innerHTML = galleryData.map((project, index) => {
+                const primaryImage = project.images.find(img => img.is_primary) || project.images[0];
+                const gradient     = gradients[index % gradients.length];
+
+                const adminButtons = isEditMode ? `
+                    <div class="admin-actions">
+                        <button class="btn-edit" onclick="event.stopPropagation(); openEditModal(${project.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn-delete" onclick="event.stopPropagation(); deleteProject(${project.id})">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="gallery-item ${isEditMode ? 'edit-mode' : ''}" onclick="openLightbox(${index})">
+                        <div class="gallery-item-image" style="background: ${gradient};">
+                            ${primaryImage ? `<img src="${primaryImage.image_url}" alt="${project.title}">` : ''}
+                        </div>
+                        <div class="gallery-item-content">
+                            <h3>${project.title}</h3>
+                            <p>${project.subtitle || project.service_type || ''}</p>
+                            <span class="photo-count">
+                                <i class="fas fa-images"></i>
+                                <span>${project.images.length} Foto</span>
+                            </span>
+                        </div>
+                        ${adminButtons}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showError(message) {
+            document.getElementById('galleryGrid').innerHTML =
+                `<div class="loading" style="color: #dc3545;">${message}</div>`;
+        }
+
+        // ============================================================
+        // DELETE PROJECT
+        // ============================================================
+        async function deleteProject(projectId) {
+            if (!confirm('Yakin ingin menghapus project ini?')) return;
+            try {
+                const response = await fetch(`/api/gallery/delete/${projectId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    showToast('Project berhasil dihapus!', 'success');
+                    loadGallery();
+                } else {
+                    showToast('Gagal: ' + result.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Gagal menghapus project', 'error');
+            }
+        }
+
+        // ============================================================
+        // ADMIN CONTROLS
+        // ============================================================
+        function showAdminControls() {
+            isEditMode = true;
+
+            // Badge
+            const badge = document.createElement('div');
+            badge.style.cssText = `position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#43e97b 0%,#38f9d7 100%);color:white;padding:10px 20px;border-radius:50px;font-weight:600;z-index:999;display:flex;gap:15px;align-items:center;box-shadow:0 4px 15px rgba(67,233,123,0.4);`;
+            badge.innerHTML = `<span><i class="fas fa-edit"></i> Edit Mode ON</span><button onclick="logout()" style="background:rgba(255,255,255,0.2);border:none;padding:5px 15px;border-radius:20px;color:white;cursor:pointer;font-weight:600;"><i class="fas fa-sign-out-alt"></i> Logout</button>`;
+            document.body.appendChild(badge);
+
+            // FAB — Tambah Project
+            const addBtn = document.createElement('button');
+            addBtn.style.cssText = `position:fixed;bottom:30px;right:30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:15px 30px;border-radius:50px;border:none;cursor:pointer;font-weight:600;font-size:16px;z-index:998;box-shadow:0 4px 15px rgba(102,126,234,0.4);transition:transform 0.3s;`;
+            addBtn.innerHTML = '<i class="fas fa-plus"></i> Tambah Project';
+            addBtn.onmouseover = () => addBtn.style.transform = 'translateY(-3px)';
+            addBtn.onmouseout  = () => addBtn.style.transform = 'translateY(0)';
+            addBtn.onclick     = () => openCreateModal();
+            document.body.appendChild(addBtn);
+
+            console.log('✅ Admin controls shown');
+            renderGallery(); // Re-render to show edit buttons
+        }
+
+        function logout() {
+            if (confirm('Yakin ingin logout?')) {
+                localStorage.removeItem('adminToken');
+                localStorage.removeItem('adminUser');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userRole');
+                showToast('Logout berhasil!', 'success');
+                setTimeout(() => location.reload(), 800);
+            }
+        }
+
+        // ============================================================
+        // PROJECT MODAL — OPEN / CLOSE
+        // ============================================================
+
+        /** Reset semua state & field modal */
+        function resetModal() {
+            newFiles        = [];
+            deletedImageIds = [];
+            editingProjectId = null;
+            
+            // Cek element ada dulu sebelum set value
+            const elements = {
+                fieldTitle: document.getElementById('fieldTitle'),
+                fieldSubtitle: document.getElementById('fieldSubtitle'),
+                fieldDescription: document.getElementById('fieldDescription'),
+                fieldVehicleType: document.getElementById('fieldVehicleType'),
+                fieldServiceType: document.getElementById('fieldServiceType'),
+                fieldDuration: document.getElementById('fieldDuration'),
+                fieldCompletedDate: document.getElementById('fieldCompletedDate'),
+                fieldDisplayOrder: document.getElementById('fieldDisplayOrder'),
+                previewGrid: document.getElementById('previewGrid'),
+                existingImagesSection: document.getElementById('existingImagesSection'),
+                existingImagesGrid: document.getElementById('existingImagesGrid'),
+                fileInput: document.getElementById('fileInput')
+            };
+
+            // Set values safely
+            if (elements.fieldTitle) elements.fieldTitle.value = '';
+            if (elements.fieldSubtitle) elements.fieldSubtitle.value = '';
+            if (elements.fieldDescription) elements.fieldDescription.value = '';
+            if (elements.fieldVehicleType) elements.fieldVehicleType.value = '';
+            if (elements.fieldServiceType) elements.fieldServiceType.value = '';
+            if (elements.fieldDuration) elements.fieldDuration.value = '';
+            if (elements.fieldCompletedDate) elements.fieldCompletedDate.value = '';
+            if (elements.fieldDisplayOrder) elements.fieldDisplayOrder.value = '';
+            if (elements.previewGrid) elements.previewGrid.innerHTML = '';
+            if (elements.existingImagesSection) elements.existingImagesSection.style.display = 'none';
+            if (elements.existingImagesGrid) elements.existingImagesGrid.innerHTML = '';
+            if (elements.fileInput) elements.fileInput.value = '';
+        }
+
+        /** Buka modal CREATE */
+        function openCreateModal() {
+            resetModal();
+            modalMode = 'create';
+            
+            const modalTitle = document.getElementById('modalTitle');
+            const submitLabel = document.getElementById('submitLabel');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const uploadLabel = document.getElementById('uploadLabel');
+            const projectModalOverlay = document.getElementById('projectModalOverlay');
+            
+            if (modalTitle) modalTitle.textContent = 'Tambah Project Baru';
+            if (submitLabel) submitLabel.textContent = 'Tambah Project';
+            if (btnSubmit) {
+                const icon = btnSubmit.querySelector('i');
+                if (icon) icon.className = 'fas fa-plus';
+            }
+            if (uploadLabel) uploadLabel.style.display = 'inline';
+            if (projectModalOverlay) {
+                projectModalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        /** Buka modal EDIT */
+        function openEditModal(projectId) {
+            resetModal();
+            modalMode        = 'edit';
+            editingProjectId = projectId;
+
+            const project = galleryData.find(p => p.id === projectId);
+            if (!project) { 
+                showToast('Project tidak ditemukan', 'error'); 
+                return; 
+            }
+
+            // Fill fields safely
+            const elements = {
+                fieldTitle: document.getElementById('fieldTitle'),
+                fieldSubtitle: document.getElementById('fieldSubtitle'),
+                fieldDescription: document.getElementById('fieldDescription'),
+                fieldVehicleType: document.getElementById('fieldVehicleType'),
+                fieldServiceType: document.getElementById('fieldServiceType'),
+                fieldDuration: document.getElementById('fieldDuration'),
+                fieldCompletedDate: document.getElementById('fieldCompletedDate'),
+                fieldDisplayOrder: document.getElementById('fieldDisplayOrder')
+            };
+
+            if (elements.fieldTitle) elements.fieldTitle.value = project.title || '';
+            if (elements.fieldSubtitle) elements.fieldSubtitle.value = project.subtitle || '';
+            if (elements.fieldDescription) elements.fieldDescription.value = project.description || '';
+            if (elements.fieldVehicleType) elements.fieldVehicleType.value = project.vehicle_type || '';
+            if (elements.fieldServiceType) elements.fieldServiceType.value = project.service_type || '';
+            if (elements.fieldDuration) elements.fieldDuration.value = project.duration || '';
+            if (elements.fieldCompletedDate) elements.fieldCompletedDate.value = project.completed_date || '';
+            if (elements.fieldDisplayOrder) elements.fieldDisplayOrder.value = project.display_order !== undefined ? project.display_order : 0;
+
+            // Show existing images
+            const existingImagesSection = document.getElementById('existingImagesSection');
+            const existingImagesGrid = document.getElementById('existingImagesGrid');
+            
+            if (project.images && project.images.length > 0) {
+                if (existingImagesSection) existingImagesSection.style.display = 'block';
+                if (existingImagesGrid) {
+                    existingImagesGrid.innerHTML = project.images.map(img => `
+                        <div class="existing-thumb" data-id="${img.id}">
+                            <img src="${img.image_url}" alt="">
+                            ${img.is_primary ? '<div class="primary-badge">Primary</div>' : ''}
+                            <button class="delete-existing" onclick="markImageDelete(${img.id}, this)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Update modal labels
+            const modalTitle = document.getElementById('modalTitle');
+            const submitLabel = document.getElementById('submitLabel');
+            const btnSubmit = document.getElementById('btnSubmit');
+            const uploadLabel = document.getElementById('uploadLabel');
+            const projectModalOverlay = document.getElementById('projectModalOverlay');
+
+            if (modalTitle) modalTitle.textContent = 'Edit Project';
+            if (submitLabel) submitLabel.textContent = 'Simpan Perubahan';
+            if (btnSubmit) {
+                const icon = btnSubmit.querySelector('i');
+                if (icon) icon.className = 'fas fa-save';
+            }
+            if (uploadLabel) {
+                uploadLabel.style.display = 'inline';
+                uploadLabel.textContent = '(opsional – untuk menambah foto baru)';
+            }
+
+            if (projectModalOverlay) {
+                projectModalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        /** Tutup modal */
+        function closeProjectModal() {
+            const projectModalOverlay = document.getElementById('projectModalOverlay');
+            if (projectModalOverlay) {
+                projectModalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            resetModal();
+        }
+
+        /** Klik overlay di luar modal → tutup */
+        function handleModalOverlayClick(e) {
+            if (e.target.id === 'projectModalOverlay') {
+                closeProjectModal();
+            }
+        }
+
+        // ============================================================
+        // IMAGE HANDLING
+        // ============================================================
+
+        /** Drag & drop support */
+        const uploadZone = document.getElementById('uploadZone');
+        if (uploadZone) {
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('dragover');
+            });
+            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                handleFiles(e.dataTransfer.files);
+            });
+        }
+
+        /** <input> change */
+        function handleFileSelect(e) {
+            handleFiles(e.target.files);
+        }
+
+        /** Validasi & tambah ke newFiles + preview */
+        function handleFiles(fileList) {
+            const allowed = ['image/jpeg','image/jpg','image/png','image/webp'];
+            Array.from(fileList).forEach(file => {
+                if (!allowed.includes(file.type)) {
+                    showToast(`"${file.name}" tidak didukung`, 'error');
+                    return;
+                }
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast(`"${file.name}" melebihi 10MB`, 'error');
+                    return;
+                }
+                if (newFiles.length >= 10) {
+                    showToast('Maks 10 foto', 'error');
+                    return;
+                }
+                newFiles.push(file);
+                addPreviewThumb(file, newFiles.length - 1);
+            });
+            
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput) fileInput.value = '';
+        }
+
+        /** Tambah preview thumb ke grid */
+        function addPreviewThumb(file, index) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const div = document.createElement('div');
+                div.className = 'preview-thumb';
+                div.dataset.index = index;
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="">
+                    <button class="remove-preview" onclick="removeNewImage(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                const previewGrid = document.getElementById('previewGrid');
+                if (previewGrid) previewGrid.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        /** Hapus dari newFiles & preview */
+        function removeNewImage(index) {
+            newFiles[index] = null;
+            const thumb = document.querySelector(`.preview-thumb[data-index="${index}"]`);
+            if (thumb) thumb.remove();
+        }
+
+        /** Toggle hapus pada foto existing (edit modal) */
+        function markImageDelete(imageId, btn) {
+            const thumb = btn.closest('.existing-thumb');
+            if (deletedImageIds.includes(imageId)) {
+                deletedImageIds = deletedImageIds.filter(id => id !== imageId);
+                if (thumb) thumb.classList.remove('marked-delete');
+            } else {
+                deletedImageIds.push(imageId);
+                if (thumb) thumb.classList.add('marked-delete');
+            }
+        }
+
+        // ============================================================
+        // SUBMIT  (create / update)
+        // ============================================================
+        async function submitProject() {
+            const fieldTitle = document.getElementById('fieldTitle');
+            const title = fieldTitle ? fieldTitle.value.trim() : '';
+            
+            if (!title) {
+                showToast('Nama Kendaraan wajib diisi', 'error');
+                if (fieldTitle) fieldTitle.focus();
+                return;
+            }
+
+            const actualFiles = newFiles.filter(f => f !== null);
+            if (modalMode === 'create' && actualFiles.length === 0) {
+                showToast('Upload minimal 1 foto', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btnSubmit');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<div class="spinner"></div> <span>Memproses...</span>';
+            }
+
+            try {
+                if (modalMode === 'create') {
+                    await apiCreate(title, actualFiles);
+                } else {
+                    await apiUpdate(title, actualFiles);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Terjadi kesalahan, coba lagi', 'error');
+            }
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = modalMode === 'create'
+                    ? '<i class="fas fa-plus"></i> <span>Tambah Project</span>'
+                    : '<i class="fas fa-save"></i> <span>Simpan Perubahan</span>';
+            }
+        }
+
+        /** POST /api/gallery/create */
+        async function apiCreate(title, files) {
+            const formData = new FormData();
+            formData.append('title', title);
+            
+            const elements = {
+                fieldSubtitle: document.getElementById('fieldSubtitle'),
+                fieldDescription: document.getElementById('fieldDescription'),
+                fieldVehicleType: document.getElementById('fieldVehicleType'),
+                fieldServiceType: document.getElementById('fieldServiceType'),
+                fieldDuration: document.getElementById('fieldDuration'),
+                fieldCompletedDate: document.getElementById('fieldCompletedDate'),
+                fieldDisplayOrder: document.getElementById('fieldDisplayOrder')
+            };
+            
+            if (elements.fieldSubtitle) formData.append('subtitle', elements.fieldSubtitle.value.trim());
+            if (elements.fieldDescription) formData.append('description', elements.fieldDescription.value.trim());
+            if (elements.fieldVehicleType) formData.append('vehicle_type', elements.fieldVehicleType.value.trim());
+            if (elements.fieldServiceType) formData.append('service_type', elements.fieldServiceType.value.trim());
+            if (elements.fieldDuration) formData.append('duration', elements.fieldDuration.value.trim());
+            if (elements.fieldCompletedDate) formData.append('completed_date', elements.fieldCompletedDate.value.trim());
+            if (elements.fieldDisplayOrder) formData.append('display_order', elements.fieldDisplayOrder.value || '0');
+
+            files.forEach(file => formData.append('images', file));
+
+            const res = await fetch('/api/gallery/create', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },
+                body: formData
+            });
+            const result = await res.json();
+
+            if (result.status === 'success') {
+                showToast('Project berhasil ditambahkan!', 'success');
+                closeProjectModal();
+                await loadGallery(); // ✅ RELOAD DATA
+            } else {
+                showToast('Gagal: ' + (result.message || 'Unknown error'), 'error');
+            }
+        }
+
+        /** POST /api/gallery/update/:id */
+        async function apiUpdate(title, files) {
+            const formData = new FormData();
+            formData.append('title', title);
+            
+            const elements = {
+                fieldSubtitle: document.getElementById('fieldSubtitle'),
+                fieldDescription: document.getElementById('fieldDescription'),
+                fieldVehicleType: document.getElementById('fieldVehicleType'),
+                fieldServiceType: document.getElementById('fieldServiceType'),
+                fieldDuration: document.getElementById('fieldDuration'),
+                fieldCompletedDate: document.getElementById('fieldCompletedDate'),
+                fieldDisplayOrder: document.getElementById('fieldDisplayOrder')
+            };
+            
+            if (elements.fieldSubtitle) formData.append('subtitle', elements.fieldSubtitle.value.trim());
+            if (elements.fieldDescription) formData.append('description', elements.fieldDescription.value.trim());
+            if (elements.fieldVehicleType) formData.append('vehicle_type', elements.fieldVehicleType.value.trim());
+            if (elements.fieldServiceType) formData.append('service_type', elements.fieldServiceType.value.trim());
+            if (elements.fieldDuration) formData.append('duration', elements.fieldDuration.value.trim());
+            if (elements.fieldCompletedDate) formData.append('completed_date', elements.fieldCompletedDate.value.trim());
+            if (elements.fieldDisplayOrder) formData.append('display_order', elements.fieldDisplayOrder.value || '0');
+
+            if (deletedImageIds.length > 0) {
+                formData.append('deleted_images', JSON.stringify(deletedImageIds));
+            }
+
+            files.forEach(file => formData.append('newImages', file));
+
+            const res = await fetch(`/api/gallery/update/${editingProjectId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },
+                body: formData
+            });
+            const result = await res.json();
+
+            if (result.status === 'success') {
+                showToast('Project berhasil diupdate!', 'success');
+                closeProjectModal(); // ✅ TUTUP MODAL
+                await loadGallery(); // ✅ RELOAD DATA
+            } else {
+                showToast('Gagal: ' + (result.message || 'Unknown error'), 'error');
+            }
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        let toastTimeout;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            const icon  = toast ? toast.querySelector('i') : null;
+            
+            if (toastMessage) toastMessage.textContent = message;
+            if (toast) {
+                toast.className = 'toast ' + type + ' show';
+                if (icon) icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+            }
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                if (toast) toast.classList.remove('show');
+            }, 2800);
+        }
+
+        // ============================================================
+        // LIGHTBOX
+        // ============================================================
         function openLightbox(galleryIndex) {
             currentGallery = galleryIndex;
-            currentSlide = 0;
-            
-            const lightbox = document.getElementById('lightbox');
+            currentSlide   = 0;
+
             const gallery = galleryData[galleryIndex];
+            const elements = {
+                lightboxTitle: document.getElementById('lightboxTitle'),
+                lightboxSubtitle: document.getElementById('lightboxSubtitle'),
+                lightboxDescription: document.getElementById('lightboxDescription'),
+                lightboxDate: document.getElementById('lightboxDate'),
+                lightboxVehicle: document.getElementById('lightboxVehicle'),
+                lightboxService: document.getElementById('lightboxService'),
+                lightboxDuration: document.getElementById('lightboxDuration'),
+                lightbox: document.getElementById('lightbox')
+            };
             
-            // Update content
-            document.getElementById('lightboxTitle').textContent = gallery.title;
-            document.getElementById('lightboxSubtitle').textContent = gallery.subtitle;
-            document.getElementById('lightboxDescription').textContent = gallery.description;
-            document.getElementById('lightboxDate').textContent = gallery.date;
-            document.getElementById('lightboxService').textContent = gallery.service;
-            document.getElementById('lightboxDuration').textContent = gallery.duration;
-            
+            if (elements.lightboxTitle) elements.lightboxTitle.textContent = gallery.title;
+            if (elements.lightboxSubtitle) elements.lightboxSubtitle.textContent = gallery.subtitle || '';
+            if (elements.lightboxDescription) elements.lightboxDescription.textContent = gallery.description || '';
+            if (elements.lightboxDate) elements.lightboxDate.textContent = gallery.completed_date || '-';
+            if (elements.lightboxVehicle) elements.lightboxVehicle.textContent = gallery.vehicle_type || '-';
+            if (elements.lightboxService) elements.lightboxService.textContent = gallery.service_type || '-';
+            if (elements.lightboxDuration) elements.lightboxDuration.textContent = gallery.duration || '-';
+
             updateSlide();
             createThumbnails();
-            
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
+
+            if (elements.lightbox) {
+                elements.lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            if (lightbox) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function changeSlide(direction) {
             const gallery = galleryData[currentGallery];
             currentSlide += direction;
-            
-            if (currentSlide < 0) {
-                currentSlide = gallery.images.length - 1;
-            } else if (currentSlide >= gallery.images.length) {
-                currentSlide = 0;
-            }
-            
+            if (currentSlide < 0) currentSlide = gallery.images.length - 1;
+            else if (currentSlide >= gallery.images.length) currentSlide = 0;
             updateSlide();
         }
 
         function updateSlide() {
             const gallery = galleryData[currentGallery];
-            const image = document.getElementById('lightboxImage');
-            const counter = document.getElementById('lightboxCounter');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCounter = document.getElementById('lightboxCounter');
             
-            image.src = gallery.images[currentSlide];
-            counter.textContent = `${currentSlide + 1} / ${gallery.images.length}`;
-            
+            if (gallery.images && gallery.images.length > 0) {
+                if (lightboxImage) lightboxImage.src = gallery.images[currentSlide].image_url;
+                if (lightboxCounter) lightboxCounter.textContent = `${currentSlide + 1} / ${gallery.images.length}`;
+            }
             updateThumbnailsActive();
         }
 
         function createThumbnails() {
             const gallery = galleryData[currentGallery];
             const container = document.getElementById('lightboxThumbnails');
-            container.innerHTML = '';
             
-            gallery.images.forEach((img, index) => {
-                const thumb = document.createElement('img');
-                thumb.src = img;
-                thumb.className = 'lightbox-thumbnail' + (index === 0 ? ' active' : '');
-                thumb.onclick = () => {
-                    currentSlide = index;
-                    updateSlide();
-                };
-                container.appendChild(thumb);
-            });
+            if (!container) return;
+            
+            container.innerHTML = '';
+            if (gallery.images && gallery.images.length > 0) {
+                gallery.images.forEach((img, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = img.image_url;
+                    thumb.className = 'lightbox-thumbnail' + (index === 0 ? ' active' : '');
+                    thumb.onclick = () => { currentSlide = index; updateSlide(); };
+                    container.appendChild(thumb);
+                });
+            }
         }
 
         function updateThumbnailsActive() {
-            const thumbnails = document.querySelectorAll('.lightbox-thumbnail');
-            thumbnails.forEach((thumb, index) => {
-                thumb.classList.toggle('active', index === currentSlide);
+            document.querySelectorAll('.lightbox-thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === currentSlide);
             });
         }
 
-        // Keyboard navigation
+        // Keyboard nav
         document.addEventListener('keydown', (e) => {
             const lightbox = document.getElementById('lightbox');
-            if (lightbox.classList.contains('active')) {
+            if (lightbox && lightbox.classList.contains('active')) {
                 if (e.key === 'ArrowLeft') changeSlide(-1);
                 if (e.key === 'ArrowRight') changeSlide(1);
                 if (e.key === 'Escape') closeLightbox();
             }
         });
 
-        // Close lightbox when clicking outside
-        document.getElementById('lightbox').addEventListener('click', (e) => {
-            if (e.target.id === 'lightbox') {
-                closeLightbox();
+        // Click outside lightbox
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox) {
+            lightbox.addEventListener('click', (e) => {
+                if (e.target.id === 'lightbox') closeLightbox();
+            });
+        }
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Galeri loaded');
+
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userRole   = localStorage.getItem('userRole');
+
+            if (isLoggedIn === 'true' && userRole === 'admin' && authToken) {
+                console.log('✅ Admin logged in');
+                showAdminControls();
             }
+
+            loadGallery();
         });
     </script>
 </body>
