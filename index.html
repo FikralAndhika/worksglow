@@ -1014,31 +1014,19 @@
     <!-- External JavaScript -->
     <script src="script.js"></script>
     
-    <!-- 🔥 UPDATED: API Configuration with Environment Variable Support -->
+    <!-- ✅ FIXED: Simplified API Configuration -->
     <script>
-        // ✅ Dynamic API URL Configuration
-        // This will automatically use the environment variable if set in Vercel
-        // For local development: uses localhost
-        // For production: uses the environment variable VITE_API_URL or default fallback
-        const getApiUrl = () => {
-            // Check if we're in a build environment with Vite
-            if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) {
-                return import.meta.env.VITE_API_URL;
-            }
-            
-            // Fallback untuk production (Vercel akan inject ini)
-            // Ganti URL ini dengan URL backend production Anda setelah deploy
-            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                // 🚨 IMPORTANT: Replace this with your actual backend URL after deployment
-                return 'https://worksglow-backend.vercel.app';
-            }
-            
-            // Local development
-            return 'https://worksglow-backend.vercel.app';
-        };
+        // 🔥 FIXED: Simple and reliable API URL configuration
+        const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3000'  // Local development
+            : 'https://worksglow-backend.vercel.app';  // Production
 
-        const API_URL = 'https://worksglow-backend.vercel.app';
-    console.log('🌐 API URL:', API_URL);
+        console.log('🌐 Current hostname:', window.location.hostname);
+        console.log('🌐 Using API URL:', API_URL);
+
+        // Global auth token
+        let authToken = localStorage.getItem('adminToken');
+        let isEditMode = false;
 
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
