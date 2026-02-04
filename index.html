@@ -1014,9 +1014,32 @@
     <!-- External JavaScript -->
     <script src="script.js"></script>
     
-    <!-- Admin & Edit JavaScript -->
+    <!-- 🔥 UPDATED: API Configuration with Environment Variable Support -->
     <script>
-        const API_URL = 'http://127.0.0.1:3000';
+        // ✅ Dynamic API URL Configuration
+        // This will automatically use the environment variable if set in Vercel
+        // For local development: uses localhost
+        // For production: uses the environment variable VITE_API_URL or default fallback
+        const getApiUrl = () => {
+            // Check if we're in a build environment with Vite
+            if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) {
+                return import.meta.env.VITE_API_URL;
+            }
+            
+            // Fallback untuk production (Vercel akan inject ini)
+            // Ganti URL ini dengan URL backend production Anda setelah deploy
+            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                // 🚨 IMPORTANT: Replace this with your actual backend URL after deployment
+                return 'https://your-backend-url.onrender.com';
+            }
+            
+            // Local development
+            return 'http://localhost:3000';
+        };
+
+        const API_URL = getApiUrl();
+        console.log('🌐 API URL:', API_URL);
+        
         let authToken = localStorage.getItem('adminToken');
         let isEditMode = false;
 
