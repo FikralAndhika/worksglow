@@ -14,30 +14,35 @@ const authRoutes = require('./routes/authRoutes');
 const servicesRoutes = require('./routes/servicesRoutes');
 const heroRoutes = require('./routes/heroRoutes');
 const contactRoutes = require('./routes/contactRoutes');
-const galleryRoutes = require('./routes/galleryRoutes');  // ✅ BARU
-const aboutRoutes = require('./routes/aboutRoutes');      // ✅ BARU
+const galleryRoutes = require('./routes/galleryRoutes');
+const aboutRoutes = require('./routes/aboutRoutes');
 
 // Initialize Express App
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://worksglow.vercel.app', 'https://worksglows.vercel.app'] 
+    : '*',
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (frontend HTML/CSS/JS)
 app.use(express.static(path.join(__dirname, '..')));
 
-// ✅ DIPERBAIKI: Path uploads disesuaikan dengan struktur folder
-// Karena public/ ada di dalam folder server/, maka pakai 'public/uploads'
+// Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Test Route
 app.get('/api/test', (req, res) => {
   res.json({ 
     message: 'Backend Works Glow is running!',
-    status: 'success' 
+    status: 'success',
+    environment: process.env.NODE_ENV || 'development'
   });
 });
 
@@ -71,10 +76,10 @@ app.use('/api/hero', heroRoutes);
 // Contact Routes
 app.use('/api/contact', contactRoutes);
 
-// Gallery Routes ✅ BARU
+// Gallery Routes
 app.use('/api/gallery', galleryRoutes);
 
-// About Routes ✅ BARU
+// About Routes
 app.use('/api/about', aboutRoutes);
 
 // Root route
@@ -82,11 +87,35 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
-// Start Server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📂 Frontend: http://localhost:${PORT}`);
-  console.log(`🔌 API: http://localhost:${PORT}/api`);
-  console.log(`🖼️  Gallery API: http://localhost:${PORT}/api/gallery`);      // ✅ BARU
-  console.log(`📄 About API: http://localhost:${PORT}/api/about`);           // ✅ BARU
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    message: 'Route not found',
+    path: req.path,
+    status: 'error'
+  });
 });
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({
+    message: 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
+    status: 'error'
+  });
+});
+
+// Start Server (Only in development, not in Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📂 Frontend: http://localhost:${PORT}`);
+    console.log(`🔌 API: http://localhost:${PORT}/api`);
+    console.log(`🖼️  Gallery API: http://localhost:${PORT}/api/gallery`);
+    console.log(`📄 About API: http://localhost:${PORT}/api/about`);
+  });
+}
+
+// Export for Vercel serverless functions
+module.exports = app;

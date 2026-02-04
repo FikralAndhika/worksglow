@@ -1178,6 +1178,11 @@
 
     <script>
         // ============================================================
+        // ✅ API Configuration
+        // ============================================================
+        const API_URL = 'http://127.0.0.1:3000';
+
+        // ============================================================
         // STATE
         // ============================================================
         let galleryData   = [];
@@ -1189,18 +1194,22 @@
         let isEditMode = false;
 
         // Modal state
-        let modalMode        = 'create';   // 'create' | 'edit'
+        let modalMode        = 'create';
         let editingProjectId = null;
-        let newFiles         = [];          // File objects staged for upload
-        let deletedImageIds  = [];          // IDs of existing images to remove on update
+        let newFiles         = [];
+        let deletedImageIds  = [];
 
         // ============================================================
         // GALLERY LOAD & RENDER
         // ============================================================
         async function loadGallery() {
             try {
-                const response = await fetch('/api/gallery');
+                console.log('🔄 Loading gallery from:', API_URL + '/api/gallery');
+                const response = await fetch(API_URL + '/api/gallery');
                 const result   = await response.json();
+                
+                console.log('📥 Gallery data:', result);
+                
                 if (result.status === 'success') {
                     galleryData = result.data;
                     renderGallery();
@@ -1208,7 +1217,7 @@
                     showError('Gagal memuat galeri');
                 }
             } catch (error) {
-                console.error('Error loading gallery:', error);
+                console.error('❌ Error loading gallery:', error);
                 showError('Gagal memuat galeri. Silakan coba lagi.');
             }
         }
@@ -1261,6 +1270,8 @@
                     </div>
                 `;
             }).join('');
+            
+            console.log('✅ Gallery rendered with', galleryData.length, 'projects');
         }
 
         function showError(message) {
@@ -1274,7 +1285,7 @@
         async function deleteProject(projectId) {
             if (!confirm('Yakin ingin menghapus project ini?')) return;
             try {
-                const response = await fetch(`/api/gallery/delete/${projectId}`, {
+                const response = await fetch(`${API_URL}/api/gallery/delete/${projectId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
@@ -1316,7 +1327,7 @@
             document.body.appendChild(addBtn);
 
             console.log('✅ Admin controls shown');
-            renderGallery(); // Re-render to show edit buttons
+            renderGallery();
         }
 
         function logout() {
@@ -1334,13 +1345,11 @@
         // PROJECT MODAL — OPEN / CLOSE
         // ============================================================
 
-        /** Reset semua state & field modal */
         function resetModal() {
             newFiles        = [];
             deletedImageIds = [];
             editingProjectId = null;
             
-            // Cek element ada dulu sebelum set value
             const elements = {
                 fieldTitle: document.getElementById('fieldTitle'),
                 fieldSubtitle: document.getElementById('fieldSubtitle'),
@@ -1356,7 +1365,6 @@
                 fileInput: document.getElementById('fileInput')
             };
 
-            // Set values safely
             if (elements.fieldTitle) elements.fieldTitle.value = '';
             if (elements.fieldSubtitle) elements.fieldSubtitle.value = '';
             if (elements.fieldDescription) elements.fieldDescription.value = '';
@@ -1371,7 +1379,6 @@
             if (elements.fileInput) elements.fileInput.value = '';
         }
 
-        /** Buka modal CREATE */
         function openCreateModal() {
             resetModal();
             modalMode = 'create';
@@ -1395,7 +1402,6 @@
             }
         }
 
-        /** Buka modal EDIT */
         function openEditModal(projectId) {
             resetModal();
             modalMode        = 'edit';
@@ -1407,7 +1413,6 @@
                 return; 
             }
 
-            // Fill fields safely
             const elements = {
                 fieldTitle: document.getElementById('fieldTitle'),
                 fieldSubtitle: document.getElementById('fieldSubtitle'),
@@ -1428,7 +1433,6 @@
             if (elements.fieldCompletedDate) elements.fieldCompletedDate.value = project.completed_date || '';
             if (elements.fieldDisplayOrder) elements.fieldDisplayOrder.value = project.display_order !== undefined ? project.display_order : 0;
 
-            // Show existing images
             const existingImagesSection = document.getElementById('existingImagesSection');
             const existingImagesGrid = document.getElementById('existingImagesGrid');
             
@@ -1447,7 +1451,6 @@
                 }
             }
 
-            // Update modal labels
             const modalTitle = document.getElementById('modalTitle');
             const submitLabel = document.getElementById('submitLabel');
             const btnSubmit = document.getElementById('btnSubmit');
@@ -1471,7 +1474,6 @@
             }
         }
 
-        /** Tutup modal */
         function closeProjectModal() {
             const projectModalOverlay = document.getElementById('projectModalOverlay');
             if (projectModalOverlay) {
@@ -1481,7 +1483,6 @@
             resetModal();
         }
 
-        /** Klik overlay di luar modal → tutup */
         function handleModalOverlayClick(e) {
             if (e.target.id === 'projectModalOverlay') {
                 closeProjectModal();
@@ -1492,7 +1493,6 @@
         // IMAGE HANDLING
         // ============================================================
 
-        /** Drag & drop support */
         const uploadZone = document.getElementById('uploadZone');
         if (uploadZone) {
             uploadZone.addEventListener('dragover', (e) => {
@@ -1507,12 +1507,10 @@
             });
         }
 
-        /** <input> change */
         function handleFileSelect(e) {
             handleFiles(e.target.files);
         }
 
-        /** Validasi & tambah ke newFiles + preview */
         function handleFiles(fileList) {
             const allowed = ['image/jpeg','image/jpg','image/png','image/webp'];
             Array.from(fileList).forEach(file => {
@@ -1536,7 +1534,6 @@
             if (fileInput) fileInput.value = '';
         }
 
-        /** Tambah preview thumb ke grid */
         function addPreviewThumb(file, index) {
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -1555,14 +1552,12 @@
             reader.readAsDataURL(file);
         }
 
-        /** Hapus dari newFiles & preview */
         function removeNewImage(index) {
             newFiles[index] = null;
             const thumb = document.querySelector(`.preview-thumb[data-index="${index}"]`);
             if (thumb) thumb.remove();
         }
 
-        /** Toggle hapus pada foto existing (edit modal) */
         function markImageDelete(imageId, btn) {
             const thumb = btn.closest('.existing-thumb');
             if (deletedImageIds.includes(imageId)) {
@@ -1618,7 +1613,6 @@
             }
         }
 
-        /** POST /api/gallery/create */
         async function apiCreate(title, files) {
             const formData = new FormData();
             formData.append('title', title);
@@ -1643,7 +1637,7 @@
 
             files.forEach(file => formData.append('images', file));
 
-            const res = await fetch('/api/gallery/create', {
+            const res = await fetch(`${API_URL}/api/gallery/create`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` },
                 body: formData
@@ -1653,13 +1647,12 @@
             if (result.status === 'success') {
                 showToast('Project berhasil ditambahkan!', 'success');
                 closeProjectModal();
-                await loadGallery(); // ✅ RELOAD DATA
+                await loadGallery();
             } else {
                 showToast('Gagal: ' + (result.message || 'Unknown error'), 'error');
             }
         }
 
-        /** POST /api/gallery/update/:id */
         async function apiUpdate(title, files) {
             const formData = new FormData();
             formData.append('title', title);
@@ -1688,7 +1681,7 @@
 
             files.forEach(file => formData.append('newImages', file));
 
-            const res = await fetch(`/api/gallery/update/${editingProjectId}`, {
+            const res = await fetch(`${API_URL}/api/gallery/update/${editingProjectId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` },
                 body: formData
@@ -1697,8 +1690,8 @@
 
             if (result.status === 'success') {
                 showToast('Project berhasil diupdate!', 'success');
-                closeProjectModal(); // ✅ TUTUP MODAL
-                await loadGallery(); // ✅ RELOAD DATA
+                closeProjectModal();
+                await loadGallery();
             } else {
                 showToast('Gagal: ' + (result.message || 'Unknown error'), 'error');
             }
@@ -1813,7 +1806,6 @@
             });
         }
 
-        // Keyboard nav
         document.addEventListener('keydown', (e) => {
             const lightbox = document.getElementById('lightbox');
             if (lightbox && lightbox.classList.contains('active')) {
@@ -1823,7 +1815,6 @@
             }
         });
 
-        // Click outside lightbox
         const lightbox = document.getElementById('lightbox');
         if (lightbox) {
             lightbox.addEventListener('click', (e) => {
@@ -1836,6 +1827,7 @@
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
             console.log('🚀 Galeri loaded');
+            console.log('🔧 API URL:', API_URL);
 
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const userRole   = localStorage.getItem('userRole');
