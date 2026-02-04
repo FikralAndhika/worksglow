@@ -1037,11 +1037,8 @@
             return 'https://worksglow-backend.vercel.app';
         };
 
-        const API_URL = getApiUrl();
-        console.log('🌐 API URL:', API_URL);
-        
-        let authToken = localStorage.getItem('adminToken');
-        let isEditMode = false;
+        const API_URL = 'https://worksglow-backend.vercel.app';
+    console.log('🌐 API URL:', API_URL);
 
         function toggleMenu() {
             const navMenu = document.getElementById('navMenu');
